@@ -4,472 +4,496 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Florida Title Experts — Closing Cost Calculator</title>
-<meta name="description" content="Self-service closing cost calculator, seller net sheet, and title insurance quote tool for Florida real estate agents.">
+<meta name="description" content="Closing cost calculator, seller net sheet, and title quote tool for Florida real estate agents — Florida Title Experts.">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#000000;--blue:#1e90c8;--blue-lt:#5aabdf;--blue-pale:#e8f4fb;
+  --text:#1a1a2a;--muted:#5a6070;--faint:#9aa0ae;
+  --border:#e2e5ea;--border-mid:#c8cdd6;
+  --surface:#f7f8fa;--white:#fff;--green:#1d9e75;--red:#c0392b;
+  --radius-sm:6px;--radius-md:10px;--radius-lg:14px;
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#eef0f5;color:var(--text);min-height:100vh;padding:1.5rem 1rem 4rem;line-height:1.5}
+.page{max-width:740px;margin:0 auto}
 
-  :root {
-    --navy: #0a1628;
-    --blue: #1e90c8;
-    --blue-light: #5aabdf;
-    --blue-pale: #e8f4fb;
-    --text: #1a1a2a;
-    --text-muted: #5a6070;
-    --text-faint: #9aa0ae;
-    --border: #e2e5ea;
-    --border-mid: #c8cdd6;
-    --surface: #f7f8fa;
-    --white: #ffffff;
-    --green: #1d9e75;
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 14px;
-  }
+/* Header */
+.hdr{background:var(--navy);border-radius:var(--radius-lg);padding:1.1rem 1.4rem;display:flex;align-items:center;gap:14px;margin-bottom:1rem}
+.brand-name{font-size:15px;font-weight:600;color:#fff;letter-spacing:.02em}
+.brand-tag{font-size:11px;color:var(--blue-lt);letter-spacing:.07em;text-transform:uppercase;margin-top:2px}
+.hdr-links{margin-left:auto;text-align:right}
+.hdr-links a{display:block;font-size:12px;color:var(--blue-lt);text-decoration:none}
+.hdr-links a:hover{color:#fff}
 
-  html { font-size: 16px; scroll-behavior: smooth; }
+/* Lead capture gate */
+.gate{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;margin-bottom:1rem;text-align:center}
+.gate h2{font-size:18px;font-weight:600;margin-bottom:.5rem}
+.gate p{font-size:13px;color:var(--muted);margin-bottom:1.5rem;line-height:1.6}
+.gate-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left}
+.gate-form .full{grid-column:1/-1}
+.gate .btn-submit{grid-column:1/-1;margin-top:.25rem}
+.gate-note{font-size:11px;color:var(--faint);margin-top:1rem}
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-    background: #f0f2f6;
-    color: var(--text);
-    min-height: 100vh;
-    padding: 2rem 1rem 4rem;
-    line-height: 1.5;
-  }
+/* Tabs */
+.tabs{display:flex;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:1rem}
+.tab{flex:1;padding:11px 4px;text-align:center;font-size:13px;font-weight:500;cursor:pointer;border:none;background:var(--surface);color:var(--muted);transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px}
+.tab.active{background:var(--white);color:var(--navy);border-bottom:2px solid var(--blue)}
+.tab:not(:last-child){border-right:1px solid var(--border)}
+.tab:hover:not(.active){background:#eef0f4}
 
-  .page { max-width: 720px; margin: 0 auto; }
+/* Cards */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem 1.4rem;margin-bottom:1rem}
+.sec-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:1rem;display:flex;align-items:center;gap:6px}
 
-  /* ── Header ── */
-  .header {
-    background: var(--navy);
-    border-radius: var(--radius-lg);
-    padding: 1.25rem 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 1.25rem;
-  }
-  .logo {
-    width: 46px; height: 46px;
-    background: var(--blue);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; font-weight: 700; color: #fff;
-    flex-shrink: 0;
-  }
-  .brand { flex: 1; }
-  .brand-name { font-size: 16px; font-weight: 600; color: #fff; letter-spacing: 0.02em; }
-  .brand-tag { font-size: 11px; color: var(--blue-light); letter-spacing: 0.07em; text-transform: uppercase; margin-top: 2px; }
-  .header-links { text-align: right; }
-  .header-links a { display: block; font-size: 12px; color: var(--blue-light); text-decoration: none; }
-  .header-links a:hover { color: #fff; }
+/* Forms */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
+.field label{font-size:12px;font-weight:500;color:var(--muted)}
+.field input,.field select{font-size:14px;height:38px;border:1px solid var(--border);border-radius:var(--radius-sm);padding:0 11px;background:var(--surface);color:var(--text);width:100%;outline:none;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;appearance:none}
+.field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(30,144,200,.12);background:var(--white)}
+.field input.err{border-color:var(--red)}
+.pfx{position:relative}
+.pfx-s{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--muted);pointer-events:none}
+.pfx input{padding-left:20px}
+.hint{font-size:11px;color:var(--faint);margin-top:1px}
+.hint.warn{color:#c47d00}
 
-  /* ── Florida note ── */
-  .fl-note {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--blue-pale);
-    border: 1px solid #b8d9ef;
-    border-radius: var(--radius-md);
-    padding: 9px 14px;
-    font-size: 12px;
-    color: #1260a0;
-    margin-bottom: 1.25rem;
-  }
-  .fl-note svg { flex-shrink: 0; }
+/* Toggle rows */
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.tog-row:last-child{border-bottom:none;padding-bottom:0}
+.tog-lbl{font-size:13px;color:var(--text);font-weight:500}
+.tog-sub{font-size:11px;color:var(--faint);margin-top:2px;font-weight:400}
+.sw-wrap{position:relative;width:38px;height:21px;flex-shrink:0}
+.sw-wrap input{opacity:0;width:0;height:0}
+.sw-track{position:absolute;inset:0;background:#d0d5de;border-radius:21px;cursor:pointer;transition:background .2s}
+.sw-track::before{content:'';position:absolute;width:15px;height:15px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.sw-wrap input:checked+.sw-track{background:var(--blue)}
+.sw-wrap input:checked+.sw-track::before{transform:translateX(17px)}
+.sub-field{padding:10px 0 4px}
 
-  /* ── Tabs ── */
-  .tabs {
-    display: flex;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    margin-bottom: 1.25rem;
-  }
-  .tab {
-    flex: 1; padding: 11px 0;
-    text-align: center;
-    font-size: 13px; font-weight: 500;
-    cursor: pointer;
-    border: none;
-    background: var(--surface);
-    color: var(--text-muted);
-    transition: all 0.15s;
-    display: flex; align-items: center; justify-content: center; gap: 5px;
-  }
-  .tab.active { background: var(--white); color: var(--navy); }
-  .tab:not(:last-child) { border-right: 1px solid var(--border); }
-  .tab:hover:not(.active) { background: #eef0f4; }
+/* Segment control */
+.seg{display:flex;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin-top:4px}
+.seg label{flex:1;text-align:center;font-size:12px;font-weight:500;padding:6px 4px;cursor:pointer;background:var(--surface);color:var(--muted);transition:all .15s;border-right:1px solid var(--border)}
+.seg label:last-child{border-right:none}
+.seg input[type=radio]{display:none}
+.seg input[type=radio]:checked+label{background:var(--navy);color:#fff}
 
-  /* ── Cards ── */
-  .card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 1rem;
-  }
-  .sec-title {
-    font-size: 10px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.1em;
-    color: var(--text-faint);
-    margin-bottom: 1rem;
-  }
+/* Results */
+.results{background:var(--navy);border-radius:var(--radius-lg);padding:1.4rem;margin-bottom:1rem;color:#fff}
+.r-hdr{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.38);margin-bottom:1.1rem}
+.r-main{font-size:38px;font-weight:600;letter-spacing:-.02em;margin-bottom:4px}
+.r-sub{font-size:13px;color:rgba(255,255,255,.48);margin-bottom:1.4rem}
+.r-sub strong{color:rgba(255,255,255,.8);font-weight:500}
+.r-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rb{background:rgba(255,255,255,.08);border-radius:9px;padding:10px 12px}
+.rb-lbl{font-size:11px;color:rgba(255,255,255,.38);margin-bottom:3px}
+.rb-val{font-size:15px;font-weight:500}
+.rb-val.accent{color:var(--blue-lt)}
 
-  /* ── Form fields ── */
-  .fg { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .fg3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-  .field { display: flex; flex-direction: column; gap: 5px; }
-  .field.full { grid-column: 1 / -1; }
-  .field label { font-size: 12px; font-weight: 500; color: var(--text-muted); }
-  .field input, .field select {
-    font-size: 14px; height: 38px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 0 11px;
-    background: var(--surface);
-    color: var(--text);
-    width: 100%;
-    outline: none;
-    transition: border-color 0.15s, box-shadow 0.15s;
-    -webkit-appearance: none;
-  }
-  .field input:focus, .field select:focus {
-    border-color: var(--blue);
-    box-shadow: 0 0 0 3px rgba(30,144,200,0.12);
-    background: var(--white);
-  }
-  .pfx { position: relative; }
-  .pfx-sym {
-    position: absolute; left: 11px; top: 50%;
-    transform: translateY(-50%);
-    font-size: 14px; color: var(--text-muted);
-    pointer-events: none;
-  }
-  .pfx input { padding-left: 20px; }
-  .hint { font-size: 11px; color: var(--text-faint); margin-top: 1px; }
+/* Line items */
+.li-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border)}
+.li-row:last-child{border-bottom:none}
+.li-n{font-size:13px;color:var(--muted);flex:1;padding-right:12px}
+.li-n span{display:block;font-size:11px;color:var(--faint);margin-top:1px}
+.li-v{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap}
+.li-row.tot{padding-top:11px;margin-top:3px;border-top:2px solid var(--border-mid);border-bottom:none}
+.li-row.tot .li-n{font-size:14px;font-weight:600;color:var(--text)}
+.li-row.tot .li-v{font-size:15px;font-weight:600;color:var(--navy)}
+.li-row.credit .li-v{color:var(--green)}
+.li-row.section-hdr{background:var(--surface);margin:0 -1.4rem;padding:6px 1.4rem;border-bottom:1px solid var(--border)}
+.li-row.section-hdr .li-n{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--faint)}
+.li-row.section-hdr .li-v{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--faint)}
 
-  /* ── Toggles ── */
-  .tog-row {
-    display: flex; align-items: center;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .tog-row:last-child { border-bottom: none; padding-bottom: 0; }
-  .tog-lbl { font-size: 13px; color: var(--text); }
-  .tog-sub { font-size: 11px; color: var(--text-faint); margin-top: 2px; }
-  .switch { position: relative; width: 38px; height: 21px; flex-shrink: 0; }
-  .switch input { opacity: 0; width: 0; height: 0; }
-  .sw-track {
-    position: absolute; inset: 0;
-    background: #d0d5de;
-    border-radius: 21px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .sw-track::before {
-    content: '';
-    position: absolute;
-    width: 15px; height: 15px;
-    left: 3px; top: 3px;
-    background: #fff;
-    border-radius: 50%;
-    transition: transform 0.2s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-  }
-  .switch input:checked + .sw-track { background: var(--blue); }
-  .switch input:checked + .sw-track::before { transform: translateX(17px); }
-  .sub-field { padding: 10px 0 4px; }
-  .hidden { display: none !important; }
+/* Side badges */
+.badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle;letter-spacing:.04em}
+.badge.buyer{background:#dbeeff;color:#0c4a8f}
+.badge.seller{background:#fff3cd;color:#7a5000}
+.badge.both{background:#e8f5e9;color:#1b5e20}
 
-  /* ── Results banner ── */
-  .results {
-    background: var(--navy);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    color: #fff;
-  }
-  .r-hdr {
-    font-size: 10px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.1em;
-    color: rgba(255,255,255,0.38);
-    margin-bottom: 1.25rem;
-  }
-  .r-main { font-size: 40px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 4px; }
-  .r-sub { font-size: 13px; color: rgba(255,255,255,0.48); margin-bottom: 1.5rem; }
-  .r-sub strong { color: rgba(255,255,255,0.8); font-weight: 500; }
-  .r-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .rb { background: rgba(255,255,255,0.08); border-radius: 9px; padding: 11px 13px; }
-  .rb-lbl { font-size: 11px; color: rgba(255,255,255,0.38); margin-bottom: 4px; }
-  .rb-val { font-size: 16px; font-weight: 500; }
-  .rb-val.accent { color: var(--blue-light); }
+/* Actions */
+.action-row{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
+.btn{flex:1;min-width:120px;padding:11px 14px;border:1px solid var(--border-mid);border-radius:var(--radius-md);background:var(--white);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s}
+.btn:hover{background:var(--surface);border-color:var(--blue);color:var(--blue)}
+.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn.primary:hover{background:#1677a8;border-color:#1677a8;color:#fff}
+.btn.navy{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.navy:hover{opacity:.88}
 
-  /* ── Line items ── */
-  .li-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 9px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .li-row:last-child { border-bottom: none; }
-  .li-n { font-size: 13px; color: var(--text-muted); }
-  .li-n span { display: block; font-size: 11px; color: var(--text-faint); margin-top: 1px; }
-  .li-v { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; margin-left: 12px; }
-  .li-row.tot { padding-top: 12px; margin-top: 4px; border-top: 2px solid var(--border-mid); border-bottom: none; }
-  .li-row.tot .li-n { font-size: 14px; font-weight: 600; color: var(--text); }
-  .li-row.tot .li-v { font-size: 15px; font-weight: 600; color: var(--navy); }
+/* Disclaimer */
+.disc{font-size:11px;color:var(--faint);line-height:1.7;padding:11px 14px;background:var(--surface);border-radius:var(--radius-md);border-left:3px solid var(--border-mid);margin-top:1rem}
 
-  /* ── Buttons ── */
-  .action-row { display: flex; gap: 8px; margin-top: 1rem; flex-wrap: wrap; }
-  .btn {
-    flex: 1; min-width: 120px; padding: 11px 14px;
-    border: 1px solid var(--border-mid);
-    border-radius: var(--radius-md);
-    background: var(--white);
-    color: var(--text);
-    font-size: 13px; font-weight: 500;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 7px;
-    transition: all 0.15s;
-  }
-  .btn:hover { background: var(--surface); border-color: var(--blue); color: var(--blue); }
-  .btn.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
-  .btn.primary:hover { background: #1677a8; border-color: #1677a8; color: #fff; }
+/* Info box */
+.info-box{background:var(--blue-pale);border:1px solid #b8d9ef;border-radius:var(--radius-md);padding:10px 14px;font-size:12px;color:#1260a0;margin-bottom:1rem;display:flex;align-items:flex-start;gap:8px;line-height:1.6}
 
-  /* ── Disclaimer ── */
-  .disc {
-    font-size: 11px; color: var(--text-faint);
-    line-height: 1.7;
-    padding: 12px 14px;
-    background: var(--surface);
-    border-radius: var(--radius-md);
-    border-left: 3px solid var(--border-mid);
-    margin-top: 1rem;
-  }
+/* Tab panels */
+.tab-panel{display:none}
+.tab-panel.active{display:block}
 
-  /* ── Print ── */
-  @media print {
-    body { background: #fff; padding: 0; }
-    .tabs, .action-row, .fl-note { display: none !important; }
-    .tab-panel { display: block !important; }
-    .card { border: 1px solid #ccc; page-break-inside: avoid; }
-    .results { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  }
+/* Print */
+@media print{
+  body{background:#fff;padding:0}
+  .tabs,.action-row,.gate,.info-box{display:none!important}
+  .tab-panel{display:block!important}
+  .card{border:1px solid #ccc;page-break-inside:avoid;margin-bottom:.5rem}
+  .results{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .hdr{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
 
-  /* ── Responsive ── */
-  @media (max-width: 520px) {
-    .fg, .fg3 { grid-template-columns: 1fr; }
-    .r-grid { grid-template-columns: 1fr 1fr; }
-    .r-main { font-size: 32px; }
-    .header { flex-wrap: wrap; }
-    .header-links { text-align: left; width: 100%; margin-top: 8px; display: flex; gap: 16px; }
-    .btn { min-width: 100%; }
-    .tab { font-size: 12px; padding: 10px 4px; }
-  }
+/* Responsive */
+@media(max-width:540px){
+  .fg,.fg3{grid-template-columns:1fr}
+  .r-grid{grid-template-columns:1fr 1fr}
+  .r-main{font-size:30px}
+  .btn{min-width:100%}
+  .tab{font-size:11px;padding:10px 2px}
+  .gate-form{grid-template-columns:1fr}
+  .gate-form .full{grid-column:1}
+  .gate .btn-submit{grid-column:1}
+}
 
-  /* ── Tab panel ── */
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
-
-  /* ── SVG icons (inline, no external dependency) ── */
-  .ico { display: inline-block; vertical-align: middle; }
+.hidden{display:none!important}
+.mt-1{margin-top:.75rem}
 </style>
 </head>
 <body>
 <div class="page">
 
-  <!-- Header -->
-  <div class="header">
-    <div class="logo">F</div>
-    <div class="brand">
-      <div class="brand-name">Florida Title Experts</div>
-      <div class="brand-tag">Your Title · Our Expertise</div>
+<!-- Header -->
+<div class="hdr">
+  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2OTYgNTQ0IiB3aWR0aD0iNjk2IiBoZWlnaHQ9IjU0NCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJGbG9yaWRhIFRpdGxlIEV4cGVydHMgbG9nbyI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJsdWUiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzdiZGNmZiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjU1JSIgc3RvcC1jb2xvcj0iIzE4YWVlOCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwODcxYWEiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJsdWUyIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNiOGVmZmYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMGQ5ZGRiIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGZpbHRlciBpZD0ic29mdEdsb3ciIHg9Ii0yMCUiIHk9Ii0yMCUiIHdpZHRoPSIxNDAlIiBoZWlnaHQ9IjE0MCUiPgogICAgICA8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIyIiByZXN1bHQ9ImJsdXIiLz4KICAgICAgPGZlTWVyZ2U+CiAgICAgICAgPGZlTWVyZ2VOb2RlIGluPSJibHVyIi8+CiAgICAgICAgPGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+CiAgICAgIDwvZmVNZXJnZT4KICAgIDwvZmlsdGVyPgogICAgPHN0eWxlPgogICAgICAuY3lhbi1maWxse2ZpbGw6dXJsKCNibHVlKTtzdHJva2U6IzliZThmZjtzdHJva2Utd2lkdGg6NDtzdHJva2UtbGluZWpvaW46cm91bmQ7c3Ryb2tlLWxpbmVjYXA6cm91bmR9CiAgICAgIC5jeWFuLXN0cm9rZXtmaWxsOm5vbmU7c3Ryb2tlOiM4YmU3ZmY7c3Ryb2tlLXdpZHRoOjY7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS1saW5lY2FwOnJvdW5kfQogICAgICAuZGFya3tmaWxsOiMwNDExMWN9CiAgICAgIC53aGl0ZXtmaWxsOiNmN2Y3Zjd9CiAgICAgIC5zdWJ7ZmlsbDojNTViZGU5O2ZvbnQtZmFtaWx5Ok1vbnRzZXJyYXQsQXJpYWwsc2Fucy1zZXJpZjtmb250LXNpemU6MTdweDtmb250LXdlaWdodDo3MDA7bGV0dGVyLXNwYWNpbmc6MTFweH0KICAgICAgLnRpdGxle2ZpbGw6I2ZmZmZmZjtmb250LWZhbWlseTpNb250c2VycmF0LEFyaWFsLHNhbnMtc2VyaWY7Zm9udC1zaXplOjQ1cHg7Zm9udC13ZWlnaHQ6OTAwO2xldHRlci1zcGFjaW5nOjFweH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgoKICA8cmVjdCB3aWR0aD0iNjk2IiBoZWlnaHQ9IjU0NCIgZmlsbD0iIzAwMCIvPgoKICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLC00KSIgZmlsdGVyPSJ1cmwoI3NvZnRHbG93KSI+CiAgICA8IS0tIFJvb2YgYmFzZSBsaW5lIC0tPgogICAgPHBhdGggZD0iTTEyNiAyOTIgSDU3MCIgc3Ryb2tlPSIjOGFlN2ZmIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTExNiAzMDIgSDU4MiIgc3Ryb2tlPSIjMGI4OGJkIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgoKICAgIDwhLS0gTGVmdCByb29mIG1hc3MgLS0+CiAgICA8cGF0aCBjbGFzcz0iY3lhbi1maWxsIiBkPSJNMTI2IDI4OCBMMjIwIDIwNyBMMjc4IDI4OCBaIi8+CiAgICA8cGF0aCBjbGFzcz0iZGFyayIgZD0iTTE1NCAyNzYgTDIyMCAyMjAgTDI2MyAyNzYgWiIvPgogICAgPHBhdGggY2xhc3M9ImN5YW4tc3Ryb2tlIiBkPSJNMTU0IDI3NiBMMjIwIDIyMCBMMjYzIDI3NiIvPgogICAgPHJlY3QgeD0iMTgyIiB5PSIyMjQiIHdpZHRoPSIxNyIgaGVpZ2h0PSI1NSIgcng9IjIiIGZpbGw9InVybCgjYmx1ZSkiIHN0cm9rZT0iIzhiZTdmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+CgogICAgPCEtLSBDZW50ZXIgZGlhbW9uZCAtLT4KICAgIDxwYXRoIGNsYXNzPSJjeWFuLWZpbGwiIGQ9Ik0zNDggMTI4IEw0MjQgMjA0IEwzNDggMjgwIEwyNzIgMjA0IFoiLz4KICAgIDxwYXRoIGQ9Ik0zNDggMTQ0IEw0MDggMjA0IEwzNDggMjY0IEwyODggMjA0IFoiIGZpbGw9InVybCgjYmx1ZTIpIiBvcGFjaXR5PSIuOTIiLz4KICAgIDx0ZXh0IHg9IjM0OCIgeT0iMjE5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iTW9udHNlcnJhdCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjQzIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjMDcxMzFmIj5GPC90ZXh0PgoKICAgIDwhLS0gUmlnaHQgcm9vZiBtYXNzIC0tPgogICAgPHBhdGggY2xhc3M9ImN5YW4tZmlsbCIgZD0iTTQxOCAyODggTDQ3NiAyMDcgTDU3MCAyODggWiIvPgogICAgPHBhdGggY2xhc3M9ImRhcmsiIGQ9Ik00MzQgMjc2IEw0NzYgMjIwIEw1NDIgMjc2IFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjeWFuLXN0cm9rZSIgZD0iTTQzNCAyNzYgTDQ3NiAyMjAgTDU0MiAyNzYiLz4KICAgIDxyZWN0IHg9IjQ5NyIgeT0iMjI0IiB3aWR0aD0iMTciIGhlaWdodD0iNTUiIHJ4PSIyIiBmaWxsPSJ1cmwoI2JsdWUpIiBzdHJva2U9IiM4YmU3ZmYiIHN0cm9rZS13aWR0aD0iMiIvPgoKICAgIDwhLS0gQ29ubmVjdGluZyByb29mIGxpbmVzIC0tPgogICAgPHBhdGggY2xhc3M9ImN5YW4tc3Ryb2tlIiBkPSJNMjc4IDI4OCBMMzE5IDI0MCBMMzQ4IDI4OCBMMzc3IDI0MCBMNDE4IDI4OCIvPgogICAgPHBhdGggZD0iTTI4NiAyODggTDMyMCAyNTIgTDM0OCAyOTYgTDM3NiAyNTIgTDQxMCAyODgiIGZpbGw9IiMwNDExMWMiLz4KCiAgICA8IS0tIFdpbmRvd3MgbGVmdCAtLT4KICAgIDxnIHN0cm9rZT0iIzhiZTdmZiIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSIjMDYxNjIyIj4KICAgICAgPHJlY3QgeD0iMjQyIiB5PSIyNTgiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMiIgcng9IjEiLz4KICAgICAgPHBhdGggZD0iTTI1NyAyNTggVjI5MCBNMjQyIDI3NCBIMjcyIi8+CiAgICAgIDxyZWN0IHg9IjE5MSIgeT0iMjU5IiB3aWR0aD0iMjgiIGhlaWdodD0iMzEiIHJ4PSIxIi8+CiAgICAgIDxwYXRoIGQ9Ik0yMDUgMjU5IFYyOTAgTTE5MSAyNzUgSDIxOSIvPgogICAgICA8cmVjdCB4PSI0NzYiIHk9IjI1OCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjMyIiByeD0iMSIvPgogICAgICA8cGF0aCBkPSJNNDkxIDI1OCBWMjkwIE00NzYgMjc0IEg1MDYiLz4KICAgIDwvZz4KICA8L2c+CgogIDwhLS0gTWFpbiB0ZXh0IC0tPgogIDx0ZXh0IGNsYXNzPSJ0aXRsZSIgeD0iMzQ4IiB5PSIzNjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkZMT1JJREEgVElUTEUgRVhQRVJUUzwvdGV4dD4KICA8dGV4dCBjbGFzcz0ic3ViIiB4PSIzNDgiIHk9IjQwNyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+WU9VUiBUSVRMRSBPVVIgRVhQRVJUSVNFPC90ZXh0Pgo8L3N2Zz4K" alt="Florida Title Experts" style="height:90px;width:auto;flex-shrink:0;mix-blend-mode:lighten">
+  <div class="hdr-links" style="margin-left:auto">
+    <a href="https://fltitleexperts.com/" target="_blank" rel="noopener">fltitleexperts.com ↗</a>
+    <a href="tel:+13054001234">Schedule a closing</a>
+  </div>
+</div>
+
+<!-- Lead capture gate -->
+<div class="gate" id="gate">
+  <div style="text-align:center;margin-bottom:1rem"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2OTYgNTQ0IiB3aWR0aD0iNjk2IiBoZWlnaHQ9IjU0NCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJGbG9yaWRhIFRpdGxlIEV4cGVydHMgbG9nbyI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJsdWUiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzdiZGNmZiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjU1JSIgc3RvcC1jb2xvcj0iIzE4YWVlOCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwODcxYWEiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJsdWUyIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNiOGVmZmYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMGQ5ZGRiIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGZpbHRlciBpZD0ic29mdEdsb3ciIHg9Ii0yMCUiIHk9Ii0yMCUiIHdpZHRoPSIxNDAlIiBoZWlnaHQ9IjE0MCUiPgogICAgICA8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIyIiByZXN1bHQ9ImJsdXIiLz4KICAgICAgPGZlTWVyZ2U+CiAgICAgICAgPGZlTWVyZ2VOb2RlIGluPSJibHVyIi8+CiAgICAgICAgPGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+CiAgICAgIDwvZmVNZXJnZT4KICAgIDwvZmlsdGVyPgogICAgPHN0eWxlPgogICAgICAuY3lhbi1maWxse2ZpbGw6dXJsKCNibHVlKTtzdHJva2U6IzliZThmZjtzdHJva2Utd2lkdGg6NDtzdHJva2UtbGluZWpvaW46cm91bmQ7c3Ryb2tlLWxpbmVjYXA6cm91bmR9CiAgICAgIC5jeWFuLXN0cm9rZXtmaWxsOm5vbmU7c3Ryb2tlOiM4YmU3ZmY7c3Ryb2tlLXdpZHRoOjY7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS1saW5lY2FwOnJvdW5kfQogICAgICAuZGFya3tmaWxsOiMwNDExMWN9CiAgICAgIC53aGl0ZXtmaWxsOiNmN2Y3Zjd9CiAgICAgIC5zdWJ7ZmlsbDojNTViZGU5O2ZvbnQtZmFtaWx5Ok1vbnRzZXJyYXQsQXJpYWwsc2Fucy1zZXJpZjtmb250LXNpemU6MTdweDtmb250LXdlaWdodDo3MDA7bGV0dGVyLXNwYWNpbmc6MTFweH0KICAgICAgLnRpdGxle2ZpbGw6I2ZmZmZmZjtmb250LWZhbWlseTpNb250c2VycmF0LEFyaWFsLHNhbnMtc2VyaWY7Zm9udC1zaXplOjQ1cHg7Zm9udC13ZWlnaHQ6OTAwO2xldHRlci1zcGFjaW5nOjFweH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgoKICA8cmVjdCB3aWR0aD0iNjk2IiBoZWlnaHQ9IjU0NCIgZmlsbD0iIzAwMCIvPgoKICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLC00KSIgZmlsdGVyPSJ1cmwoI3NvZnRHbG93KSI+CiAgICA8IS0tIFJvb2YgYmFzZSBsaW5lIC0tPgogICAgPHBhdGggZD0iTTEyNiAyOTIgSDU3MCIgc3Ryb2tlPSIjOGFlN2ZmIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTExNiAzMDIgSDU4MiIgc3Ryb2tlPSIjMGI4OGJkIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgoKICAgIDwhLS0gTGVmdCByb29mIG1hc3MgLS0+CiAgICA8cGF0aCBjbGFzcz0iY3lhbi1maWxsIiBkPSJNMTI2IDI4OCBMMjIwIDIwNyBMMjc4IDI4OCBaIi8+CiAgICA8cGF0aCBjbGFzcz0iZGFyayIgZD0iTTE1NCAyNzYgTDIyMCAyMjAgTDI2MyAyNzYgWiIvPgogICAgPHBhdGggY2xhc3M9ImN5YW4tc3Ryb2tlIiBkPSJNMTU0IDI3NiBMMjIwIDIyMCBMMjYzIDI3NiIvPgogICAgPHJlY3QgeD0iMTgyIiB5PSIyMjQiIHdpZHRoPSIxNyIgaGVpZ2h0PSI1NSIgcng9IjIiIGZpbGw9InVybCgjYmx1ZSkiIHN0cm9rZT0iIzhiZTdmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+CgogICAgPCEtLSBDZW50ZXIgZGlhbW9uZCAtLT4KICAgIDxwYXRoIGNsYXNzPSJjeWFuLWZpbGwiIGQ9Ik0zNDggMTI4IEw0MjQgMjA0IEwzNDggMjgwIEwyNzIgMjA0IFoiLz4KICAgIDxwYXRoIGQ9Ik0zNDggMTQ0IEw0MDggMjA0IEwzNDggMjY0IEwyODggMjA0IFoiIGZpbGw9InVybCgjYmx1ZTIpIiBvcGFjaXR5PSIuOTIiLz4KICAgIDx0ZXh0IHg9IjM0OCIgeT0iMjE5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iTW9udHNlcnJhdCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjQzIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjMDcxMzFmIj5GPC90ZXh0PgoKICAgIDwhLS0gUmlnaHQgcm9vZiBtYXNzIC0tPgogICAgPHBhdGggY2xhc3M9ImN5YW4tZmlsbCIgZD0iTTQxOCAyODggTDQ3NiAyMDcgTDU3MCAyODggWiIvPgogICAgPHBhdGggY2xhc3M9ImRhcmsiIGQ9Ik00MzQgMjc2IEw0NzYgMjIwIEw1NDIgMjc2IFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjeWFuLXN0cm9rZSIgZD0iTTQzNCAyNzYgTDQ3NiAyMjAgTDU0MiAyNzYiLz4KICAgIDxyZWN0IHg9IjQ5NyIgeT0iMjI0IiB3aWR0aD0iMTciIGhlaWdodD0iNTUiIHJ4PSIyIiBmaWxsPSJ1cmwoI2JsdWUpIiBzdHJva2U9IiM4YmU3ZmYiIHN0cm9rZS13aWR0aD0iMiIvPgoKICAgIDwhLS0gQ29ubmVjdGluZyByb29mIGxpbmVzIC0tPgogICAgPHBhdGggY2xhc3M9ImN5YW4tc3Ryb2tlIiBkPSJNMjc4IDI4OCBMMzE5IDI0MCBMMzQ4IDI4OCBMMzc3IDI0MCBMNDE4IDI4OCIvPgogICAgPHBhdGggZD0iTTI4NiAyODggTDMyMCAyNTIgTDM0OCAyOTYgTDM3NiAyNTIgTDQxMCAyODgiIGZpbGw9IiMwNDExMWMiLz4KCiAgICA8IS0tIFdpbmRvd3MgbGVmdCAtLT4KICAgIDxnIHN0cm9rZT0iIzhiZTdmZiIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSIjMDYxNjIyIj4KICAgICAgPHJlY3QgeD0iMjQyIiB5PSIyNTgiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMiIgcng9IjEiLz4KICAgICAgPHBhdGggZD0iTTI1NyAyNTggVjI5MCBNMjQyIDI3NCBIMjcyIi8+CiAgICAgIDxyZWN0IHg9IjE5MSIgeT0iMjU5IiB3aWR0aD0iMjgiIGhlaWdodD0iMzEiIHJ4PSIxIi8+CiAgICAgIDxwYXRoIGQ9Ik0yMDUgMjU5IFYyOTAgTTE5MSAyNzUgSDIxOSIvPgogICAgICA8cmVjdCB4PSI0NzYiIHk9IjI1OCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjMyIiByeD0iMSIvPgogICAgICA8cGF0aCBkPSJNNDkxIDI1OCBWMjkwIE00NzYgMjc0IEg1MDYiLz4KICAgIDwvZz4KICA8L2c+CgogIDwhLS0gTWFpbiB0ZXh0IC0tPgogIDx0ZXh0IGNsYXNzPSJ0aXRsZSIgeD0iMzQ4IiB5PSIzNjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkZMT1JJREEgVElUTEUgRVhQRVJUUzwvdGV4dD4KICA8dGV4dCBjbGFzcz0ic3ViIiB4PSIzNDgiIHk9IjQwNyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+WU9VUiBUSVRMRSBPVVIgRVhQRVJUSVNFPC90ZXh0Pgo8L3N2Zz4K" alt="Florida Title Experts" style="height:100px;width:auto"></div>
+  <h2>Get your free closing cost estimate</h2>
+  <p>Enter your contact info below so our team can follow up with a confirmed quote.<br>All estimates are provided by Florida Title Experts.</p>
+  <div class="gate-form">
+    <div class="field">
+      <label for="g-name">Full name *</label>
+      <input type="text" id="g-name" placeholder="Jane Smith">
     </div>
-    <div class="header-links">
-      <a href="https://fltitleexperts.com/" target="_blank" rel="noopener">fltitleexperts.com ↗</a>
-      <a href="mailto:info@fltitleexperts.com">Request a closing</a>
+    <div class="field">
+      <label for="g-phone">Phone *</label>
+      <input type="tel" id="g-phone" placeholder="(305) 555-0100">
+    </div>
+    <div class="field full">
+      <label for="g-email">Email *</label>
+      <input type="email" id="g-email" placeholder="jane@brokerage.com">
+    </div>
+    <div class="field full">
+      <label for="g-role">I am a…</label>
+      <select id="g-role">
+        <option value="">Select…</option>
+        <option value="realtor">Realtor / Agent</option>
+        <option value="broker">Mortgage Broker / Lender</option>
+        <option value="buyer">Buyer</option>
+        <option value="seller">Seller</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="btn-submit full">
+      <button class="btn navy" style="width:100%;margin-top:.25rem" onclick="submitGate()">Get my estimate →</button>
     </div>
   </div>
+  <div class="gate-note">🔒 Your information is only shared with Florida Title Experts and will never be sold.</div>
+</div>
 
-  <!-- Florida note -->
-  <div class="fl-note">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1260a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 4.9 7 13 7 13s7-8.1 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-    Florida-specific rates — doc stamps, intangible tax &amp; title insurance per Florida statutes &amp; DFS promulgated schedule
+<!-- Calculator (hidden until gate passed) -->
+<div id="calc-wrap" class="hidden">
+
+  <div class="info-box">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1260a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><path d="M12 2a7 7 0 0 0-7 7c0 4.9 7 13 7 13s7-8.1 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+    <span>Florida-specific rates — all fees per Florida statutes, DFS Rule 69O-186, and Florida Title Experts' fee schedule.</span>
   </div>
 
   <!-- Tabs -->
   <div class="tabs" role="tablist">
-    <button class="tab active" role="tab" aria-selected="true" onclick="switchTab('buyer',this)">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Buyer closing
+    <button class="tab active" role="tab" onclick="switchTab('purchase',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Purchase
     </button>
-    <button class="tab" role="tab" aria-selected="false" onclick="switchTab('seller',this)">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-      Seller net sheet
+    <button class="tab" role="tab" onclick="switchTab('refi',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      Refinance
     </button>
-    <button class="tab" role="tab" aria-selected="false" onclick="switchTab('quote',this)">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
-      Title quote
+    <button class="tab" role="tab" onclick="switchTab('seller',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Seller Net Sheet
     </button>
   </div>
 
-  <!-- ══════════ BUYER TAB ══════════ -->
-  <div id="tab-buyer" class="tab-panel active">
+  <!-- ══ PURCHASE TAB ══ -->
+  <div id="tab-purchase" class="tab-panel active">
+
     <div class="card">
       <div class="sec-title">Transaction details</div>
       <div class="fg">
         <div class="field">
-          <label for="b-price">Purchase price</label>
-          <div class="pfx"><span class="pfx-sym">$</span><input type="number" id="b-price" value="450000" min="1000" oninput="calcBuyer()"></div>
+          <label for="p-price">Purchase price</label>
+          <div class="pfx"><span class="pfx-s">$</span><input type="number" id="p-price" value="450000" min="1000" oninput="calcPurchase()"></div>
         </div>
         <div class="field">
-          <label for="b-down">Down payment %</label>
-          <input type="number" id="b-down" value="20" min="0" max="100" step="0.5" oninput="calcBuyer()">
-          <div class="hint" id="b-down-amt">= $90,000</div>
-        </div>
-        <div class="field">
-          <label for="b-rate">Interest rate %</label>
-          <input type="number" id="b-rate" value="6.75" step="0.125" oninput="calcBuyer()">
-        </div>
-        <div class="field">
-          <label for="b-term">Loan term</label>
-          <select id="b-term" onchange="calcBuyer()">
-            <option value="30">30-year fixed</option>
-            <option value="15">15-year fixed</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="b-loan">Loan type</label>
-          <select id="b-loan" onchange="calcBuyer()">
-            <option value="conv">Conventional</option>
-            <option value="fha">FHA</option>
-            <option value="va">VA</option>
-            <option value="cash">Cash (no loan)</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="b-county">County</label>
-          <select id="b-county" onchange="calcBuyer()">
-            <option value="miami">Miami-Dade</option>
+          <label for="p-county">County</label>
+          <select id="p-county" onchange="calcPurchase()">
             <option value="broward">Broward</option>
+            <option value="miami">Miami-Dade</option>
             <option value="palm">Palm Beach</option>
             <option value="orange">Orange (Orlando)</option>
             <option value="hillsborough">Hillsborough (Tampa)</option>
             <option value="duval">Duval (Jacksonville)</option>
             <option value="pinellas">Pinellas (St. Pete)</option>
-            <option value="other">Other</option>
+            <option value="other">Other FL County</option>
           </select>
+        </div>
+        <div class="field">
+          <label>Property type</label>
+          <div class="seg">
+            <input type="radio" name="p-proptype" id="pt-house" value="house" checked onchange="calcPurchase()"><label for="pt-house">House / Townhome</label>
+            <input type="radio" name="p-proptype" id="pt-condo" value="condo" onchange="calcPurchase()"><label for="pt-condo">Condo</label>
+          </div>
+          <div class="hint">Survey waived on condos</div>
+        </div>
+        <div class="field">
+          <label>Financing</label>
+          <div class="seg">
+            <input type="radio" name="p-fin" id="fin-loan" value="loan" checked onchange="calcPurchase()"><label for="fin-loan">Getting a loan</label>
+            <input type="radio" name="p-fin" id="fin-cash" value="cash" onchange="calcPurchase()"><label for="fin-cash">Cash</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loan fields -->
+      <div id="p-loan-fields" class="mt-1">
+        <div class="fg">
+          <div class="field">
+            <label for="p-loan">Loan amount</label>
+            <div class="pfx"><span class="pfx-s">$</span><input type="number" id="p-loan" value="360000" min="0" oninput="calcPurchase()"></div>
+          </div>
+          <div class="field">
+            <label for="p-rate">Interest rate %</label>
+            <input type="number" id="p-rate" value="6.75" step="0.125" oninput="calcPurchase()">
+          </div>
+          <div class="field">
+            <label for="p-term">Loan term</label>
+            <select id="p-term" onchange="calcPurchase()">
+              <option value="30">30-year fixed</option>
+              <option value="15">15-year fixed</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="p-ltype">Loan type</label>
+            <select id="p-ltype" onchange="calcPurchase()">
+              <option value="conv">Conventional</option>
+              <option value="fha">FHA</option>
+              <option value="va">VA</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="p-lender-fees">Optional: estimated lender fees (if known)</label>
+            <div class="pfx"><span class="pfx-s">$</span><input type="number" id="p-lender-fees" value="0" min="0" placeholder="0" oninput="calcPurchase()"></div>
+            <div class="hint">Origination, appraisal, credit report, underwriting — varies by lender</div>
+          </div>
         </div>
       </div>
     </div>
 
+    <!-- Contract / who pays title -->
     <div class="card">
-      <div class="sec-title">Options</div>
-      <div class="tog-row">
-        <div><div class="tog-lbl">Seller concessions</div><div class="tog-sub">Seller credits toward buyer closing costs</div></div>
-        <label class="switch"><input type="checkbox" id="b-conc" onchange="tog('b-conc','b-conc-f');calcBuyer()"><span class="sw-track"></span></label>
+      <div class="sec-title">Contract terms — who pays owner's title policy?</div>
+      <div class="seg" style="margin-bottom:.75rem">
+        <input type="radio" name="p-contract" id="c-std" value="std" checked onchange="calcPurchase()"><label for="c-std">Standard (state/county)</label>
+        <input type="radio" name="p-contract" id="c-buyer" value="buyer" onchange="calcPurchase()"><label for="c-buyer">Buyer pays</label>
+        <input type="radio" name="p-contract" id="c-seller" value="seller" onchange="calcPurchase()"><label for="c-seller">Seller pays</label>
       </div>
-      <div id="b-conc-f" class="sub-field hidden">
-        <div class="field"><label>Concession amount</label><div class="pfx"><span class="pfx-sym">$</span><input type="number" id="b-conc-amt" value="5000" oninput="calcBuyer()"></div></div>
+      <div class="hint" id="p-contract-hint" style="color:var(--muted);font-size:12px;line-height:1.6"></div>
+    </div>
+
+    <!-- Tax proration -->
+    <div class="card">
+      <div class="sec-title">Tax proration</div>
+      <div class="fg">
+        <div class="field">
+          <label for="p-close-date">Closing date</label>
+          <input type="date" id="p-close-date" oninput="calcPurchase()">
+        </div>
+        <div class="field">
+          <label for="p-adval">Prior year ad valorem taxes</label>
+          <div class="pfx"><span class="pfx-s">$</span><input type="number" id="p-adval" value="5000" min="0" placeholder="0" oninput="calcPurchase()"></div>
+          <div class="hint">From prior year tax bill (paid in arrears)</div>
+        </div>
+        <div class="field">
+          <label for="p-nonadval">Non-ad valorem assessments</label>
+          <div class="pfx"><span class="pfx-s">$</span><input type="number" id="p-nonadval" value="500" min="0" placeholder="0" oninput="calcPurchase()"></div>
+          <div class="hint">From prior year tax bill (paid in advance, Oct 1–Sep 30)</div>
+        </div>
+        <div class="field">
+          <label for="p-hoa">Monthly HOA dues (if any)</label>
+          <div class="pfx"><span class="pfx-s">$</span><input type="number" id="p-hoa" value="0" min="0" placeholder="0" oninput="calcPurchase()"></div>
+        </div>
       </div>
-      <div class="tog-row">
-        <div><div class="tog-lbl">Prepaids &amp; escrow setup</div><div class="tog-sub">Homeowners insurance + ~2 months property taxes</div></div>
-        <label class="switch"><input type="checkbox" id="b-prepaid" checked onchange="calcBuyer()"><span class="sw-track"></span></label>
+    </div>
+
+    <!-- Results -->
+    <div class="results">
+      <div class="r-hdr">Purchase estimate — Florida Title Experts</div>
+      <div class="r-main" id="p-buyer-total">—</div>
+      <div class="r-sub">Estimated buyer total at closing (excl. down payment)</div>
+      <div class="r-grid">
+        <div class="rb"><div class="rb-lbl">Seller net proceeds</div><div class="rb-val" id="p-seller-net">—</div></div>
+        <div class="rb"><div class="rb-lbl">Seller total deductions</div><div class="rb-val" id="p-seller-ded">—</div></div>
+        <div class="rb"><div class="rb-lbl">Monthly P&amp;I payment</div><div class="rb-val" id="p-monthly">—</div></div>
+        <div class="rb"><div class="rb-lbl">Title &amp; closing fees</div><div class="rb-val accent" id="p-title-fees">—</div></div>
       </div>
-      <div class="tog-row">
-        <div><div class="tog-lbl">HOA transfer fee</div><div class="tog-sub">If the property has an HOA (~$350)</div></div>
-        <label class="switch"><input type="checkbox" id="b-hoa" onchange="calcBuyer()"><span class="sw-track"></span></label>
-      </div>
-      <div class="tog-row">
-        <div><div class="tog-lbl">Survey</div><div class="tog-sub">Required by most lenders (~$450)</div></div>
-        <label class="switch"><input type="checkbox" id="b-survey" onchange="calcBuyer()"><span class="sw-track"></span></label>
+    </div>
+
+    <div class="card">
+      <div class="sec-title">Full breakdown by party</div>
+      <div id="p-lines"></div>
+    </div>
+  </div>
+
+  <!-- ══ REFI TAB ══ -->
+  <div id="tab-refi" class="tab-panel">
+    <div class="card">
+      <div class="sec-title">Refinance details</div>
+      <div class="fg">
+        <div class="field">
+          <label for="r-loan">New loan amount</label>
+          <div class="pfx"><span class="pfx-s">$</span><input type="number" id="r-loan" value="360000" min="1000" oninput="calcRefi()"></div>
+        </div>
+        <div class="field">
+          <label for="r-county">County</label>
+          <select id="r-county" onchange="calcRefi()">
+            <option value="broward">Broward</option>
+            <option value="miami">Miami-Dade</option>
+            <option value="palm">Palm Beach</option>
+            <option value="orange">Orange (Orlando)</option>
+            <option value="hillsborough">Hillsborough (Tampa)</option>
+            <option value="duval">Duval (Jacksonville)</option>
+            <option value="pinellas">Pinellas (St. Pete)</option>
+            <option value="other">Other FL County</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="r-rate">New interest rate %</label>
+          <input type="number" id="r-rate" value="6.25" step="0.125" oninput="calcRefi()">
+        </div>
+        <div class="field">
+          <label for="r-term">New loan term</label>
+          <select id="r-term" onchange="calcRefi()">
+            <option value="30">30-year fixed</option>
+            <option value="15">15-year fixed</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="r-lender-fees">Optional: estimated lender fees (if known)</label>
+          <div class="pfx"><span class="pfx-s">$</span><input type="number" id="r-lender-fees" value="0" min="0" placeholder="0" oninput="calcRefi()"></div>
+          <div class="hint">Origination, appraisal, underwriting — varies by lender</div>
+        </div>
       </div>
     </div>
 
     <div class="results">
-      <div class="r-hdr">Estimated buyer closing costs — Florida</div>
-      <div class="r-main" id="b-total">—</div>
-      <div class="r-sub">Total cash to close (down payment + closing costs): <strong id="b-cash">—</strong></div>
+      <div class="r-hdr">Refinance estimate — Florida Title Experts</div>
+      <div class="r-main" id="rf-total">—</div>
+      <div class="r-sub">Estimated total closing costs (lender fees may vary)</div>
       <div class="r-grid">
-        <div class="rb"><div class="rb-lbl">Loan amount</div><div class="rb-val" id="b-lamt">—</div></div>
-        <div class="rb"><div class="rb-lbl">Est. monthly P&amp;I</div><div class="rb-val" id="b-mo">—</div></div>
-        <div class="rb"><div class="rb-lbl">Down payment</div><div class="rb-val" id="b-dp">—</div></div>
-        <div class="rb"><div class="rb-lbl">Closing costs only</div><div class="rb-val accent" id="b-cc">—</div></div>
+        <div class="rb"><div class="rb-lbl">Lender's title policy</div><div class="rb-val" id="rf-title">—</div></div>
+        <div class="rb"><div class="rb-lbl">Doc stamps + intangible</div><div class="rb-val" id="rf-taxes">—</div></div>
+        <div class="rb"><div class="rb-lbl">Title &amp; closing fees</div><div class="rb-val accent" id="rf-fees">—</div></div>
+        <div class="rb"><div class="rb-lbl">New monthly P&amp;I</div><div class="rb-val" id="rf-monthly">—</div></div>
       </div>
     </div>
 
     <div class="card">
       <div class="sec-title">Cost breakdown</div>
-      <div id="b-lines"></div>
+      <div id="rf-lines"></div>
     </div>
   </div>
 
-  <!-- ══════════ SELLER TAB ══════════ -->
+  <!-- ══ SELLER NET SHEET TAB ══ -->
   <div id="tab-seller" class="tab-panel">
     <div class="card">
-      <div class="sec-title">Property &amp; loan details</div>
+      <div class="sec-title">Property details</div>
       <div class="fg">
         <div class="field">
           <label for="s-price">Sale price</label>
-          <div class="pfx"><span class="pfx-sym">$</span><input type="number" id="s-price" value="450000" min="1000" oninput="calcSeller()"></div>
+          <div class="pfx"><span class="pfx-s">$</span><input type="number" id="s-price" value="450000" min="1000" oninput="calcSeller()"></div>
         </div>
         <div class="field">
           <label for="s-payoff">Mortgage payoff</label>
-          <div class="pfx"><span class="pfx-sym">$</span><input type="number" id="s-payoff" value="280000" min="0" oninput="calcSeller()"></div>
+          <div class="pfx"><span class="pfx-s">$</span><input type="number" id="s-payoff" value="280000" min="0" oninput="calcSeller()"></div>
+        </div>
+        <div class="field">
+          <label for="s-county">County</label>
+          <select id="s-county" onchange="calcSeller()">
+            <option value="broward">Broward</option>
+            <option value="miami">Miami-Dade</option>
+            <option value="palm">Palm Beach</option>
+            <option value="orange">Orange (Orlando)</option>
+            <option value="hillsborough">Hillsborough (Tampa)</option>
+            <option value="duval">Duval (Jacksonville)</option>
+            <option value="pinellas">Pinellas (St. Pete)</option>
+            <option value="other">Other FL County</option>
+          </select>
         </div>
         <div class="field">
           <label for="s-comm">Agent commission %</label>
           <input type="number" id="s-comm" value="5" step="0.25" min="0" max="10" oninput="calcSeller()">
           <div class="hint" id="s-comm-hint">= $22,500</div>
         </div>
-        <div class="field">
-          <label for="s-county">County</label>
-          <select id="s-county" onchange="calcSeller()">
-            <option value="miami">Miami-Dade</option>
-            <option value="broward">Broward</option>
-            <option value="palm">Palm Beach</option>
-            <option value="orange">Orange (Orlando)</option>
-            <option value="hillsborough">Hillsborough (Tampa)</option>
-            <option value="duval">Duval (Jacksonville)</option>
-            <option value="pinellas">Pinellas (St. Pete)</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
       </div>
+    </div>
+
+    <div class="card">
+      <div class="sec-title">Contract terms — who pays owner's title policy?</div>
+      <div class="seg" style="margin-bottom:.75rem">
+        <input type="radio" name="s-contract" id="sc-std" value="std" checked onchange="calcSeller()"><label for="sc-std">Standard (state/county)</label>
+        <input type="radio" name="s-contract" id="sc-buyer" value="buyer" onchange="calcSeller()"><label for="sc-buyer">Buyer pays</label>
+        <input type="radio" name="s-contract" id="sc-seller" value="seller" onchange="calcSeller()"><label for="sc-seller">Seller pays</label>
+      </div>
+      <div class="hint" id="s-contract-hint" style="color:var(--muted);font-size:12px;line-height:1.6"></div>
     </div>
 
     <div class="card">
       <div class="sec-title">Credits &amp; extras</div>
       <div class="tog-row">
-        <div><div class="tog-lbl">Buyer closing cost credit</div><div class="tog-sub">Seller pays a portion of buyer's costs</div></div>
-        <label class="switch"><input type="checkbox" id="s-credit" onchange="tog('s-credit','s-credit-f');calcSeller()"><span class="sw-track"></span></label>
+        <div><div class="tog-lbl">Buyer closing cost credit</div><div class="tog-sub">Seller credits a fixed amount toward buyer's costs</div></div>
+        <label class="sw-wrap"><input type="checkbox" id="s-credit" onchange="togField('s-credit','s-credit-f');calcSeller()"><span class="sw-track"></span></label>
       </div>
       <div id="s-credit-f" class="sub-field hidden">
-        <div class="field"><label>Credit amount</label><div class="pfx"><span class="pfx-sym">$</span><input type="number" id="s-credit-amt" value="5000" oninput="calcSeller()"></div></div>
+        <div class="field"><label>Credit amount</label><div class="pfx"><span class="pfx-s">$</span><input type="number" id="s-credit-amt" value="5000" oninput="calcSeller()"></div></div>
       </div>
       <div class="tog-row">
-        <div><div class="tog-lbl">Home warranty to buyer</div><div class="tog-sub">Typical cost ~$500</div></div>
-        <label class="switch"><input type="checkbox" id="s-warranty" onchange="calcSeller()"><span class="sw-track"></span></label>
+        <div><div class="tog-lbl">Home warranty to buyer</div><div class="tog-sub">~$500 typical</div></div>
+        <label class="sw-wrap"><input type="checkbox" id="s-warranty" onchange="calcSeller()"><span class="sw-track"></span></label>
       </div>
       <div class="tog-row">
         <div><div class="tog-lbl">Repair credit / allowance</div></div>
-        <label class="switch"><input type="checkbox" id="s-repairs" onchange="tog('s-repairs','s-repairs-f');calcSeller()"><span class="sw-track"></span></label>
+        <label class="sw-wrap"><input type="checkbox" id="s-repairs" onchange="togField('s-repairs','s-repairs-f');calcSeller()"><span class="sw-track"></span></label>
       </div>
       <div id="s-repairs-f" class="sub-field hidden">
-        <div class="field"><label>Repair amount</label><div class="pfx"><span class="pfx-sym">$</span><input type="number" id="s-repairs-amt" value="2000" oninput="calcSeller()"></div></div>
+        <div class="field"><label>Repair amount</label><div class="pfx"><span class="pfx-s">$</span><input type="number" id="s-repairs-amt" value="2000" oninput="calcSeller()"></div></div>
       </div>
     </div>
 
     <div class="results">
-      <div class="r-hdr">Seller net sheet — Florida</div>
+      <div class="r-hdr">Seller net sheet — Florida Title Experts</div>
       <div class="r-main" id="s-net">—</div>
       <div class="r-sub">Estimated net proceeds after all costs</div>
       <div class="r-grid">
         <div class="rb"><div class="rb-lbl">Sale price</div><div class="rb-val" id="s-gross">—</div></div>
         <div class="rb"><div class="rb-lbl">Total deductions</div><div class="rb-val" id="s-ded">—</div></div>
         <div class="rb"><div class="rb-lbl">Commission</div><div class="rb-val" id="s-comm-d">—</div></div>
-        <div class="rb"><div class="rb-lbl">Title &amp; closing fees</div><div class="rb-val accent" id="s-title-d">—</div></div>
+        <div class="rb"><div class="rb-lbl">Title &amp; closing</div><div class="rb-val accent" id="s-title-d">—</div></div>
       </div>
     </div>
 
@@ -479,268 +503,381 @@
     </div>
   </div>
 
-  <!-- ══════════ QUOTE TAB ══════════ -->
-  <div id="tab-quote" class="tab-panel">
-    <div class="card">
-      <div class="sec-title">Policy details</div>
-      <div class="fg">
-        <div class="field">
-          <label for="q-price">Purchase price</label>
-          <div class="pfx"><span class="pfx-sym">$</span><input type="number" id="q-price" value="450000" min="1000" oninput="calcQuote()"></div>
-        </div>
-        <div class="field">
-          <label for="q-loan">Loan amount</label>
-          <div class="pfx"><span class="pfx-sym">$</span><input type="number" id="q-loan" value="360000" min="0" oninput="calcQuote()"></div>
-        </div>
-        <div class="field">
-          <label for="q-type">Transaction type</label>
-          <select id="q-type" onchange="calcQuote()">
-            <option value="purchase">Purchase</option>
-            <option value="refi">Refinance</option>
-            <option value="cash">Cash purchase</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="q-county">County</label>
-          <select id="q-county" onchange="calcQuote()">
-            <option value="miami">Miami-Dade</option>
-            <option value="broward">Broward</option>
-            <option value="palm">Palm Beach</option>
-            <option value="orange">Orange (Orlando)</option>
-            <option value="hillsborough">Hillsborough (Tampa)</option>
-            <option value="duval">Duval (Jacksonville)</option>
-            <option value="pinellas">Pinellas (St. Pete)</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="sec-title">Coverage options</div>
-      <div class="tog-row">
-        <div><div class="tog-lbl">Owner's title policy</div><div class="tog-sub">Protects buyer's ownership interest — FL DFS promulgated rate</div></div>
-        <label class="switch"><input type="checkbox" id="q-owner" checked onchange="calcQuote()"><span class="sw-track"></span></label>
-      </div>
-      <div class="tog-row">
-        <div><div class="tog-lbl">Lender's title policy</div><div class="tog-sub">Required by most lenders — simultaneous issue rate on purchases</div></div>
-        <label class="switch"><input type="checkbox" id="q-lender" checked onchange="calcQuote()"><span class="sw-track"></span></label>
-      </div>
-      <div class="tog-row">
-        <div><div class="tog-lbl">Enhanced homeowner's policy (ALTA)</div><div class="tog-sub">Broader residential coverage — ~10% premium over standard</div></div>
-        <label class="switch"><input type="checkbox" id="q-enhanced" onchange="calcQuote()"><span class="sw-track"></span></label>
-      </div>
-    </div>
-
-    <div class="results">
-      <div class="r-hdr">Title insurance quote — Florida</div>
-      <div class="r-main" id="q-total">—</div>
-      <div class="r-sub">Florida DFS promulgated rates — Rule 69O-186</div>
-      <div class="r-grid">
-        <div class="rb"><div class="rb-lbl">Owner's policy</div><div class="rb-val" id="q-own-v">—</div></div>
-        <div class="rb"><div class="rb-lbl">Lender's policy</div><div class="rb-val" id="q-len-v">—</div></div>
-        <div class="rb"><div class="rb-lbl">Settlement fee</div><div class="rb-val" id="q-set-v">—</div></div>
-        <div class="rb"><div class="rb-lbl">Search &amp; exam</div><div class="rb-val accent" id="q-src-v">—</div></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="sec-title">Quote breakdown</div>
-      <div id="q-lines"></div>
-    </div>
-  </div>
-
   <!-- Actions -->
   <div class="action-row">
     <button class="btn" onclick="doCopy()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
       Copy estimate
     </button>
     <button class="btn" onclick="window.print()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-      Print / save PDF
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print / PDF
     </button>
-    <button class="btn primary" onclick="doContact()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    <button class="btn primary" onclick="window.open('https://fltitleexperts.com/','_blank','noopener')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
       Contact Florida Title Experts
     </button>
   </div>
 
-  <!-- Disclaimer -->
   <div class="disc">
-    <strong>Estimates only</strong> — not a Loan Estimate, Good Faith Estimate, or commitment to insure.
-    Florida title insurance rates per Florida DFS Rule 69O-186.
-    Documentary stamp taxes per Florida Statutes §201.02 (deed) and §201.08 (note).
-    Intangible tax per Florida Statutes §199.135.
-    Actual costs vary by lender, transaction, and county.
-    Contact Florida Title Experts for a confirmed quote before closing.
+    <strong>Estimates only</strong> — not a Loan Estimate, Good Faith Estimate, or commitment to insure. Title insurance rates per Florida DFS Rule 69O-186. Doc stamps per FL §201.02 &amp; §201.08. Intangible tax per FL §199.135. Tax proration credits are estimates based on prior-year figures provided. Actual fees vary by lender and transaction. Contact Florida Title Experts for a confirmed quote.
   </div>
 
+</div><!-- /calc-wrap -->
 </div><!-- /page -->
 
 <script>
 "use strict";
-
 /* ── Helpers ── */
 const $ = id => document.getElementById(id);
 const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
+/* Round purchase/loan up to next thousand for tax calculations */
+const roundUpK = n => Math.ceil(n / 1000) * 1000;
 const pct = (b, p) => b * (p / 100);
+const togField = (cbId, fId) => $(fId).classList.toggle('hidden', !$(cbId).checked);
 
-function tog(cbId, fieldId) {
-  $(fieldId).classList.toggle('hidden', !$(cbId).checked);
-}
-
-function switchTab(name, btn) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
-  $('tab-' + name).classList.add('active');
-  btn.classList.add('active');
-  btn.setAttribute('aria-selected','true');
-  track('tab_switch', { tab: name });
-}
-
-/* ── Florida title insurance: DFS promulgated tiered rate ── */
+/* ── FL DFS promulgated title insurance rate ── */
 function flTitleRate(amt) {
   if (amt <= 0) return 0;
-  let premium = 0;
-  if (amt <= 100000)        premium = amt * 0.00575;
-  else if (amt <= 1000000)  premium = 575 + (amt - 100000) * 0.00500;
-  else if (amt <= 5000000)  premium = 575 + 4500 + (amt - 1000000) * 0.00250;
-  else                      premium = 575 + 4500 + 10000 + (amt - 5000000) * 0.00225;
-  return Math.round(premium);
+  const a = roundUpK(amt);
+  let p = 0;
+  if (a <= 100000)        p = a * 5.75 / 1000;
+  else if (a <= 1000000)  p = 575 + (a - 100000) * 5.00 / 1000;
+  else if (a <= 5000000)  p = 575 + 4500 + (a - 1000000) * 2.50 / 1000;
+  else if (a <= 10000000) p = 575 + 4500 + 10000 + (a - 5000000) * 2.25 / 1000;
+  else                    p = 575 + 4500 + 10000 + 11250 + (a - 10000000) * 2.00 / 1000;
+  return Math.round(p);
 }
 
 /* ── Monthly P&I ── */
-function calcMonthly(loan, annualRate, years) {
-  const r = annualRate / 100 / 12;
-  const n = years * 12;
+function calcMonthly(loan, annRate, years) {
+  const r = annRate / 100 / 12, n = years * 12;
   if (r === 0 || loan <= 0) return loan / n;
-  return loan * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  return loan * (r * Math.pow(1+r,n)) / (Math.pow(1+r,n)-1);
 }
 
 /* ── Render line items ── */
-function renderLines(containerId, items) {
-  $(containerId).innerHTML = items.map(item =>
-    `<div class="li-row${item.tot ? ' tot' : ''}">
-      <div class="li-n">${item.n}${item.sub ? '<span>' + item.sub + '</span>' : ''}</div>
-      <div class="li-v">${item.v}</div>
-    </div>`
-  ).join('');
+function renderLines(cid, items) {
+  $(cid).innerHTML = items.map(i => {
+    if (i.header) return `<div class="li-row section-hdr"><div class="li-n">${i.n}</div><div class="li-v">${i.v||''}</div></div>`;
+    const classes = ['li-row', i.tot?'tot':'', i.credit?'credit':''].filter(Boolean).join(' ');
+    return `<div class="${classes}">
+      <div class="li-n">${i.n}${i.badge?`<span class="badge ${i.badge}">${i.badge}</span>`:''} ${i.sub?`<span>${i.sub}</span>`:''}
+      </div>
+      <div class="li-v">${i.v}</div>
+    </div>`;
+  }).join('');
 }
 
-/* ════════════════════════════════════════
-   BUYER CALCULATOR
-   ════════════════════════════════════════ */
-function calcBuyer() {
-  const price     = Math.max(0, parseFloat($('b-price').value) || 0);
-  const downPct   = Math.min(100, Math.max(0, parseFloat($('b-down').value) || 0));
-  const rate      = Math.max(0, parseFloat($('b-rate').value) || 0);
-  const years     = parseInt($('b-term').value) || 30;
-  const loanType  = $('b-loan').value;
-  const isCash    = loanType === 'cash';
+/* ── Contract hint text ── */
+function contractHint(county, contract, prefix) {
+  const mdb = (county === 'miami' || county === 'broward');
+  if (contract === 'std') {
+    return mdb
+      ? `Miami-Dade/Broward provision: <strong>buyer pays</strong> for the owner's title policy, title search, and lien search.`
+      : `Standard FL: <strong>seller pays</strong> for the owner's title policy, title search, and lien search.`;
+  }
+  if (contract === 'buyer') return `<strong>Buyer pays</strong> for the owner's title policy, title search, and lien search (as written in contract).`;
+  return `<strong>Seller pays</strong> for the owner's title policy, title search, and lien search (as written in contract).`;
+}
 
-  const down      = Math.round(pct(price, downPct));
-  const loan      = isCash ? 0 : Math.max(0, price - down);
-  const monthly   = isCash ? 0 : calcMonthly(loan, rate, years);
+/* Who pays owner's title under given contract/county */
+function ownerTitlePayer(county, contract) {
+  if (contract === 'buyer') return 'buyer';
+  if (contract === 'seller') return 'seller';
+  // std
+  return (county === 'miami' || county === 'broward') ? 'buyer' : 'seller';
+}
 
-  $('b-down-amt').textContent = '= ' + fmt(down);
+/* ── Tax proration ── */
+function calcProrations(closeDateStr, adval, nonadval) {
+  if (!closeDateStr || (!adval && !nonadval)) return { advalCredit: 0, nonadvalCredit: 0, desc: '' };
+  const close = new Date(closeDateStr + 'T12:00:00');
+  const y = close.getFullYear();
 
-  /* Lender fees (waived for cash) */
-  const originFee     = isCash ? 0 : Math.round(loan * 0.01);
-  const appraisal     = isCash ? 0 : 550;
-  const creditRpt     = isCash ? 0 : 35;
+  // Ad valorem: Jan 1 – Dec 31, paid in arrears → seller credits buyer for Jan 1 to close date
+  const advalStart = new Date(y + '-01-01T12:00:00');
+  const advalEnd   = new Date(y + '-12-31T12:00:00');
+  const advalDays  = Math.round((advalEnd - advalStart) / 86400000) + 1; // 365 or 366
+  const daysToClose = Math.round((close - advalStart) / 86400000);
+  const advalCredit = adval > 0 ? Math.round((adval / advalDays) * daysToClose * 100) / 100 : 0;
 
-  /* Title fees */
-  const ownerTitle    = flTitleRate(price);
-  /* Simultaneous issue: lender policy = 30% of owner rate on purchase */
-  const lenderTitle   = isCash ? 0 : Math.round(flTitleRate(loan) * 0.30);
-  const settleFee     = 595;
-  const titleSearch   = 175;
-  const titleExam     = 200;
+  // Non-ad valorem: Oct 1 – Sep 30, paid in advance → buyer credits seller from close to Sep 30
+  let nonStart, nonEnd;
+  const closeMonth = close.getMonth(); // 0-indexed
+  if (closeMonth >= 9) {
+    // Oct–Dec: fiscal year is Oct 1 this year to Sep 30 next year
+    nonStart = new Date(y + '-10-01T12:00:00');
+    nonEnd   = new Date((y+1) + '-09-30T12:00:00');
+  } else {
+    // Jan–Sep: fiscal year is Oct 1 last year to Sep 30 this year
+    nonStart = new Date((y-1) + '-10-01T12:00:00');
+    nonEnd   = new Date(y + '-09-30T12:00:00');
+  }
+  const nonDays  = Math.round((nonEnd - nonStart) / 86400000) + 1;
+  const daysLeft = Math.round((nonEnd - close) / 86400000);
+  const nonadvalCredit = nonadval > 0 ? Math.round((nonadval / nonDays) * daysLeft * 100) / 100 : 0;
 
-  /* Florida taxes */
-  /* Doc stamps on note: $3.50 per $1,000 = 0.35% */
-  const docStamps     = isCash ? 0 : Math.round(loan * 0.0035);
-  /* Intangible tax on mortgage: $2 per $1,000 = 0.20% */
-  const intangTax     = isCash ? 0 : Math.round(loan * 0.002);
+  const closeStr = close.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const desc = `Closing ${closeStr}: seller credits ${fmt(advalCredit)} ad valorem (Jan 1–close); buyer credits ${fmt(nonadvalCredit)} non-ad valorem (close–Sep 30)`;
+  return { advalCredit: Math.round(advalCredit), nonadvalCredit: Math.round(nonadvalCredit), desc };
+}
 
-  /* Recording */
-  const recording     = 185;
+/* ── HOA proration (simple: days remaining in month) ── */
+function hoaProration(closeDateStr, monthlyHOA) {
+  if (!closeDateStr || !monthlyHOA) return 0;
+  const close = new Date(closeDateStr + 'T12:00:00');
+  const y = close.getFullYear(), m = close.getMonth();
+  const lastDay = new Date(y, m+1, 0).getDate();
+  const daysLeft = lastDay - close.getDate();
+  return Math.round((monthlyHOA / lastDay) * daysLeft);
+}
 
-  /* Optional */
-  const prepaid       = $('b-prepaid').checked ? Math.round(price * 0.016) : 0;
-  const hoa           = $('b-hoa').checked ? 350 : 0;
-  const survey        = $('b-survey').checked ? 450 : 0;
+/* ══════════════════════════════════════
+   PURCHASE CALCULATOR
+══════════════════════════════════════ */
+function calcPurchase() {
+  const price     = Math.max(0, parseFloat($('p-price').value) || 0);
+  const county    = $('p-county').value;
+  const propType  = document.querySelector('input[name="p-proptype"]:checked').value;
+  const financing = document.querySelector('input[name="p-fin"]:checked').value;
+  const isCash    = financing === 'cash';
+  const contract  = document.querySelector('input[name="p-contract"]:checked').value;
+  const loanAmt   = isCash ? 0 : Math.max(0, parseFloat($('p-loan').value) || 0);
+  const rate      = parseFloat($('p-rate').value) || 0;
+  const years     = parseInt($('p-term').value) || 30;
+  const ltype     = $('p-ltype').value;
+  const lenderFees= isCash ? 0 : Math.max(0, parseFloat($('p-lender-fees').value) || 0);
+  const adval     = Math.max(0, parseFloat($('p-adval').value) || 0);
+  const nonadval  = Math.max(0, parseFloat($('p-nonadval').value) || 0);
+  const monthlyHOA= Math.max(0, parseFloat($('p-hoa').value) || 0);
+  const closeDate = $('p-close-date').value;
 
-  /* Loan-type extras */
-  const fhaMip        = loanType === 'fha' ? Math.round(loan * 0.0175) : 0;
-  const vaFee         = loanType === 'va'  ? Math.round(loan * 0.023)  : 0;
+  // Toggle loan fields visibility
+  $('p-loan-fields').classList.toggle('hidden', isCash);
 
-  /* Concession credit */
-  const concAmt       = $('b-conc').checked ? (parseFloat($('b-conc-amt').value) || 0) : 0;
+  // Contract hint
+  $('p-contract-hint').innerHTML = contractHint(county, contract, 'p');
 
-  const total = originFee + appraisal + creditRpt +
-    ownerTitle + lenderTitle + settleFee + titleSearch + titleExam +
-    docStamps + intangTax + recording +
-    prepaid + hoa + survey + fhaMip + vaFee - concAmt;
+  const payer = ownerTitlePayer(county, contract);
 
-  /* Update summary */
-  $('b-total').textContent = fmt(total);
-  $('b-cash').textContent  = fmt(total + down);
-  $('b-lamt').textContent  = isCash ? 'Cash purchase' : fmt(loan);
-  $('b-mo').textContent    = isCash ? 'N/A' : fmt(monthly) + '/mo';
-  $('b-dp').textContent    = fmt(down);
-  $('b-cc').textContent    = fmt(total);
+  /* ── Title insurance ── */
+  const ownerPolicy  = flTitleRate(price);
+  // Lender's: simultaneous issue = $100 flat (FTE fee) on purchases
+  const lenderPolicy = isCash ? 0 : 100;
+  // Endorsements: 8.1 = $25, FF9 = 10% of (owner + lender)
+  const end81  = isCash ? 0 : 25;
+  const endFF9 = isCash ? 0 : Math.round((ownerPolicy + lenderPolicy) * 0.10);
+
+  /* ── Florida taxes ── */
+  const docStampsDeed = county === 'miami'
+    ? Math.round(roundUpK(price) * 6 / 1000)
+    : Math.round(roundUpK(price) * 7 / 1000);
+
+  const docStampsNote = isCash ? 0 : Math.round(roundUpK(loanAmt) * 3.50 / 1000);
+  const intangTax     = isCash ? 0 : Math.round(roundUpK(loanAmt) * 2.00 / 1000);
+
+  /* ── Recording fees ── */
+  const palmExtra = county === 'palm' ? 0.60 : 0;
+  const recDeed   = 35.50 + palmExtra;
+  const recMtg    = isCash ? 0 : (171.50 + palmExtra);
+  const eRecDeed  = 6; // always a deed
+  const eRecMtg   = isCash ? 0 : 6;
+
+  /* ── FTE flat fees ── */
+  const closingFeeBuyer  = 695;
+  const closingFeeSeller = 695;
+  const titleSearch      = 125; // seller 99%
+  const lienSearch       = 250; // seller 99%
+  const survey = (propType === 'condo' || isCash) ? 0 : 495; // buyer, waived condos
+
+  /* ── Loan type extras ── */
+  const fhaMip = ltype === 'fha' ? Math.round(loanAmt * 0.0175) : 0;
+  const vaFee  = ltype === 'va'  ? Math.round(loanAmt * 0.023)  : 0;
+
+  /* ── Proration ── */
+  const { advalCredit, nonadvalCredit, desc: proDesc } = calcProrations(closeDate, adval, nonadval);
+  const hoaPro = hoaProration(closeDate, monthlyHOA);
+
+  /* ── Monthly payment ── */
+  const monthly = isCash ? 0 : calcMonthly(loanAmt, rate, years);
+
+  /* ── Assign title/search/lien by payer ── */
+  const ownerPolicyBuyer  = payer === 'buyer'  ? ownerPolicy : 0;
+  const ownerPolicySeller = payer === 'seller' ? ownerPolicy : 0;
+  const titleSearchBuyer  = payer === 'buyer'  ? titleSearch : 0;
+  const titleSearchSeller = payer === 'buyer'  ? 0 : titleSearch;
+  const lienSearchBuyer   = payer === 'buyer'  ? lienSearch  : 0;
+  const lienSearchSeller  = payer === 'buyer'  ? 0 : lienSearch;
+
+  /* ── Buyer total ── */
+  const buyerTotal = closingFeeBuyer + ownerPolicyBuyer + lenderPolicy + end81 + endFF9
+    + titleSearchBuyer + lienSearchBuyer
+    + docStampsNote + intangTax
+    + Math.round(recDeed) + Math.round(recMtg) + eRecDeed + eRecMtg
+    + survey + fhaMip + vaFee + lenderFees
+    + advalCredit   // seller credit TO buyer (buyer receives, reduces cash needed)
+    - nonadvalCredit // buyer pays seller non-adval credit
+    + hoaPro;
+
+  /* ── Seller total deductions ── */
+  const sellerDeductions = closingFeeSeller + ownerPolicySeller + titleSearchSeller + lienSearchSeller
+    + docStampsDeed
+    + nonadvalCredit  // buyer credits to seller
+    - advalCredit;    // seller pays buyer ad val proration
+
+  /* ── Seller net (no commission here, seller tab handles that) ── */
+  const sellerNet = price - sellerDeductions;
+
+  /* ── Summary ── */
+  $('p-buyer-total').textContent = fmt(buyerTotal);
+  $('p-seller-net').textContent  = fmt(sellerNet);
+  $('p-seller-ded').textContent  = fmt(sellerDeductions);
+  $('p-monthly').textContent     = isCash ? 'Cash' : fmt(monthly)+'/mo';
+  $('p-title-fees').textContent  = fmt(ownerPolicy + lenderPolicy + end81 + endFF9);
+
+  /* ── Line items ── */
+  const items = [];
+
+  // Buyer side
+  items.push({ n:'BUYER', v:'', header:true });
+  items.push({ n:'Closing fee', badge:'buyer', v:fmt(closingFeeBuyer) });
+  if (ownerPolicyBuyer > 0) items.push({ n:"Owner's title insurance", badge:'buyer', sub:'FL DFS rate on purchase price (contract: buyer pays)', v:fmt(ownerPolicyBuyer) });
+  if (!isCash) {
+    items.push({ n:"Lender's title policy", badge:'buyer', sub:'Simultaneous issue rate — FL Title Experts fee', v:fmt(lenderPolicy) });
+    items.push({ n:"Endorsement 8.1", badge:'buyer', v:fmt(end81) });
+    items.push({ n:"Endorsement FF9", badge:'buyer', sub:'10% of owner + lender policy', v:fmt(endFF9) });
+  }
+  if (titleSearchBuyer > 0) items.push({ n:'Title search', badge:'buyer', sub:'Per contract terms', v:fmt(titleSearchBuyer) });
+  if (lienSearchBuyer  > 0) items.push({ n:'Lien search (third-party est.)', badge:'buyer', sub:'Per contract terms', v:fmt(lienSearchBuyer) });
+  if (!isCash) {
+    items.push({ n:'Documentary stamp tax on note', badge:'buyer', sub:`FL §201.08 — $3.50/thousand (loan rounded up to next $1k)`, v:fmt(docStampsNote) });
+    items.push({ n:'Intangible tax on mortgage', badge:'buyer', sub:'FL §199.135 — $2.00/thousand (rounded up)', v:fmt(intangTax) });
+  }
+  items.push({ n:'Recording — deed', badge:'buyer', sub:`$35.50${county==='palm'?' + $0.60 Palm Beach':''} + $6 e-recording`, v:fmt(Math.round(recDeed) + eRecDeed) });
+  if (!isCash) items.push({ n:'Recording — mortgage', badge:'buyer', sub:`$171.50${county==='palm'?' + $0.60 Palm Beach':''} + $6 e-recording`, v:fmt(Math.round(recMtg) + eRecMtg) });
+  if (survey > 0) items.push({ n:'Survey (third-party est.)', badge:'buyer', v:fmt(survey) });
+  if (fhaMip > 0) items.push({ n:'FHA upfront MIP', badge:'buyer', sub:'1.75% of loan', v:fmt(fhaMip) });
+  if (vaFee  > 0) items.push({ n:'VA funding fee', badge:'buyer', sub:'2.3% first use', v:fmt(vaFee) });
+  if (lenderFees > 0) items.push({ n:'Lender fees (as provided)', badge:'buyer', sub:'Origination, appraisal, underwriting, etc.', v:fmt(lenderFees) });
+  if (advalCredit > 0) items.push({ n:'Ad valorem tax credit from seller', badge:'buyer', sub:`Seller credits Jan 1–close${proDesc?': see proration note':''}`, credit:true, v:'– '+fmt(advalCredit) });
+  if (nonadvalCredit > 0) items.push({ n:'Non-ad valorem credit to seller', badge:'buyer', sub:'Buyer credits seller for prepaid assessment (close–Sep 30)', v:fmt(nonadvalCredit) });
+  if (hoaPro > 0) items.push({ n:'HOA proration to seller', badge:'buyer', sub:'Days remaining in month', v:fmt(hoaPro) });
+  items.push({ n:'Total estimated buyer closing costs', v:fmt(buyerTotal), tot:true });
+
+  // Seller side
+  items.push({ n:'SELLER', v:'', header:true });
+  if (ownerPolicySeller > 0) items.push({ n:"Owner's title insurance", badge:'seller', sub:'FL DFS rate on purchase price (contract: seller pays)', v:fmt(ownerPolicySeller) });
+  items.push({ n:'Closing fee', badge:'seller', v:fmt(closingFeeSeller) });
+  if (titleSearchSeller > 0) items.push({ n:'Title search', badge:'seller', sub:'Per contract terms', v:fmt(titleSearchSeller) });
+  if (lienSearchSeller  > 0) items.push({ n:'Lien search (third-party est.)', badge:'seller', sub:'Per contract terms', v:fmt(lienSearchSeller) });
+  items.push({ n:'Documentary stamp tax on deed', badge:'seller', sub:`FL §201.02 — ${county==='miami'?'$6.00':'$7.00'}/thousand${county==='miami'?' (Miami-Dade rate)':''} (rounded up)`, v:fmt(docStampsDeed) });
+  if (advalCredit > 0) items.push({ n:'Ad valorem tax credit to buyer', badge:'seller', sub:`Prorated Jan 1 – close date`, v:'– '+fmt(advalCredit) });
+  if (nonadvalCredit > 0) items.push({ n:'Non-ad valorem credit from buyer', badge:'seller', sub:'Buyer prepays seller Oct–Sep assessment', credit:true, v:'+ '+fmt(nonadvalCredit) });
+  items.push({ n:'Total estimated seller costs (excl. commission & payoff)', v:fmt(sellerDeductions), tot:true });
+
+  if (proDesc) items.push({ n:'Proration note', sub:proDesc, v:'' });
+
+  renderLines('p-lines', items);
+  trackQuote('purchase', { county, price, loanAmt, buyerTotal: Math.round(buyerTotal) });
+}
+
+/* ══════════════════════════════════════
+   REFINANCE CALCULATOR
+══════════════════════════════════════ */
+function calcRefi() {
+  const loan    = Math.max(0, parseFloat($('r-loan').value) || 0);
+  const county  = $('r-county').value;
+  const rate    = parseFloat($('r-rate').value) || 0;
+  const years   = parseInt($('r-term').value) || 30;
+  const lenderFees = Math.max(0, parseFloat($('r-lender-fees').value) || 0);
+
+  // Lender's title: full rate (no simultaneous issue on refis)
+  const lenderPolicy = flTitleRate(loan);
+  // Endorsements: 8.1 = $25, FF9 = 10% of lender policy only (no owner's on refi)
+  const end81  = 25;
+  const endFF9 = Math.round(lenderPolicy * 0.10);
+
+  const docStampsNote = Math.round(roundUpK(loan) * 3.50 / 1000);
+  const intangTax     = Math.round(roundUpK(loan) * 2.00 / 1000);
+
+  const palmExtra = county === 'palm' ? 0.60 : 0;
+  // Refi: only mortgage recorded (no deed)
+  const recMtg  = Math.round(171.50 + palmExtra);
+  const eRecMtg = 6;
+
+  const closingFee   = 695;
+  const titleSearch  = 125; // still needed
+  const lienSearch   = 250;
+
+  const monthly = calcMonthly(loan, rate, years);
+
+  const total = closingFee + lenderPolicy + end81 + endFF9
+    + titleSearch + lienSearch
+    + docStampsNote + intangTax
+    + recMtg + eRecMtg
+    + lenderFees;
+
+  $('rf-total').textContent  = fmt(total);
+  $('rf-title').textContent  = fmt(lenderPolicy);
+  $('rf-taxes').textContent  = fmt(docStampsNote + intangTax);
+  $('rf-fees').textContent   = fmt(closingFee + titleSearch + lienSearch);
+  $('rf-monthly').textContent= fmt(monthly)+'/mo';
 
   const items = [
-    ...(!isCash ? [{ n: 'Loan origination fee', sub: '1% of loan amount', v: fmt(originFee) }] : []),
-    ...(!isCash ? [{ n: 'Appraisal', v: fmt(appraisal) }] : []),
-    ...(!isCash ? [{ n: 'Credit report', v: fmt(creditRpt) }] : []),
-    { n: "Owner's title insurance", sub: 'FL DFS promulgated rate on purchase price', v: fmt(ownerTitle) },
-    ...(!isCash ? [{ n: "Lender's title insurance", sub: 'Simultaneous issue rate (purchase)', v: fmt(lenderTitle) }] : []),
-    { n: 'Settlement / closing fee', v: fmt(settleFee) },
-    { n: 'Title search', v: fmt(titleSearch) },
-    { n: 'Title examination', v: fmt(titleExam) },
-    ...(!isCash ? [{ n: 'Documentary stamp tax on note', sub: 'FL §201.08 — $3.50 per $1,000 of loan', v: fmt(docStamps) }] : []),
-    ...(!isCash ? [{ n: 'Intangible tax on mortgage', sub: 'FL §199.135 — $2.00 per $1,000 of loan', v: fmt(intangTax) }] : []),
-    { n: 'Recording fees', v: fmt(recording) },
-    ...(prepaid  > 0 ? [{ n: 'Prepaids & escrow setup', sub: 'Homeowners insurance + ~2 months property taxes', v: fmt(prepaid) }] : []),
-    ...(hoa      > 0 ? [{ n: 'HOA transfer fee', v: fmt(hoa) }] : []),
-    ...(survey   > 0 ? [{ n: 'Survey', v: fmt(survey) }] : []),
-    ...(fhaMip   > 0 ? [{ n: 'FHA upfront MIP', sub: '1.75% of loan amount', v: fmt(fhaMip) }] : []),
-    ...(vaFee    > 0 ? [{ n: 'VA funding fee', sub: '2.3% (first-time use, no down payment)', v: fmt(vaFee) }] : []),
-    ...(concAmt  > 0 ? [{ n: 'Seller concession credit', v: '− ' + fmt(concAmt) }] : []),
-    { n: 'Total estimated closing costs', v: fmt(total), tot: true },
+    { n:'Closing fee', v:fmt(closingFee) },
+    { n:"Lender's title policy", sub:'Full rate (no simultaneous issue on refinances)', v:fmt(lenderPolicy) },
+    { n:'Endorsement 8.1', v:fmt(end81) },
+    { n:'Endorsement FF9', sub:'10% of lender policy', v:fmt(endFF9) },
+    { n:'Title search', sub:'Seller/owner side', v:fmt(titleSearch) },
+    { n:'Lien search (third-party est.)', v:fmt(lienSearch) },
+    { n:'Documentary stamp tax on note', sub:'FL §201.08 — $3.50/thousand (rounded up)', v:fmt(docStampsNote) },
+    { n:'Intangible tax on mortgage', sub:'FL §199.135 — $2.00/thousand (rounded up)', v:fmt(intangTax) },
+    { n:'Recording — mortgage', sub:`$171.50${county==='palm'?' + $0.60 Palm Beach':''} + $6 e-recording`, v:fmt(recMtg + eRecMtg) },
+    ...(lenderFees > 0 ? [{ n:'Lender fees (as provided)', sub:'Origination, appraisal, underwriting, etc.', v:fmt(lenderFees) }] : []),
+    { n:'Total estimated refinance closing costs', v:fmt(total), tot:true },
+    { n:'Note', sub:'No owner\'s title insurance on refinances. No deed recorded — e-recording fee is $6 (mortgage only).', v:'' },
   ];
-  renderLines('b-lines', items);
-  track('calc_buyer', { price, loan_type: loanType, total: Math.round(total) });
+  renderLines('rf-lines', items);
+  trackQuote('refinance', { county, loan, total: Math.round(total) });
 }
 
-/* ════════════════════════════════════════
+/* ══════════════════════════════════════
    SELLER NET SHEET
-   ════════════════════════════════════════ */
+══════════════════════════════════════ */
 function calcSeller() {
-  const price    = Math.max(0, parseFloat($('s-price').value) || 0);
-  const payoff   = Math.max(0, parseFloat($('s-payoff').value) || 0);
-  const commPct  = Math.max(0, parseFloat($('s-comm').value) || 0);
-  const comm     = Math.round(pct(price, commPct));
+  const price   = Math.max(0, parseFloat($('s-price').value) || 0);
+  const payoff  = Math.max(0, parseFloat($('s-payoff').value) || 0);
+  const commPct = Math.max(0, parseFloat($('s-comm').value) || 0);
+  const county  = $('s-county').value;
+  const contract= document.querySelector('input[name="s-contract"]:checked').value;
+  const comm    = Math.round(pct(price, commPct));
 
   $('s-comm-hint').textContent = '= ' + fmt(comm);
+  $('s-contract-hint').innerHTML = contractHint(county, contract, 's');
 
-  /* Doc stamps on deed: $7.00 per $1,000 = 0.70% (seller pays in most FL counties) */
-  const docStamps  = Math.round(price * 0.007);
-  const ownerTitle = flTitleRate(price);
-  const settleFee  = 595;
-  const titleSearch= 175;
-  const titleExam  = 200;
-  const recording  = 95;
-  const warranty   = $('s-warranty').checked ? 500 : 0;
-  const credit     = $('s-credit').checked  ? (parseFloat($('s-credit-amt').value) || 0) : 0;
-  const repairs    = $('s-repairs').checked ? (parseFloat($('s-repairs-amt').value) || 0) : 0;
+  const payer = ownerTitlePayer(county, contract);
 
-  const titleClosing = ownerTitle + settleFee + titleSearch + titleExam + recording;
-  const totalDed     = payoff + comm + docStamps + titleClosing + warranty + credit + repairs;
-  const net          = price - totalDed;
+  const ownerPolicy  = flTitleRate(price);
+  const closingFee   = 695;
+  const titleSearch  = 125;
+  const lienSearch   = 250;
+
+  const sellerOwnerPolicy = payer === 'seller' ? ownerPolicy : 0;
+  const sellerTitleSearch = payer === 'seller' ? titleSearch : 0;
+  const sellerLienSearch  = payer === 'seller' ? lienSearch  : 0;
+
+  const docStampsDeed = county === 'miami'
+    ? Math.round(roundUpK(price) * 6 / 1000)
+    : Math.round(roundUpK(price) * 7 / 1000);
+
+  const warranty = $('s-warranty').checked ? 500 : 0;
+  const credit   = $('s-credit').checked   ? (parseFloat($('s-credit-amt').value) || 0) : 0;
+  const repairs  = $('s-repairs').checked  ? (parseFloat($('s-repairs-amt').value) || 0) : 0;
+
+  const titleClosing = sellerOwnerPolicy + closingFee + sellerTitleSearch + sellerLienSearch;
+  const totalDed = payoff + comm + docStampsDeed + titleClosing + warranty + credit + repairs;
+  const net = price - totalDed;
 
   $('s-net').textContent    = fmt(net);
   $('s-gross').textContent  = fmt(price);
@@ -749,158 +886,150 @@ function calcSeller() {
   $('s-title-d').textContent= fmt(titleClosing);
 
   const items = [
-    { n: 'Sale price', v: fmt(price) },
-    { n: 'Mortgage payoff', v: '− ' + fmt(payoff) },
-    { n: 'Real estate commission', sub: commPct + '% of sale price', v: '− ' + fmt(comm) },
-    { n: 'Documentary stamp tax on deed', sub: 'FL §201.02 — $7.00 per $1,000 of sale price', v: '− ' + fmt(docStamps) },
-    { n: "Owner's title insurance", sub: 'FL DFS promulgated rate (seller typically pays)', v: '− ' + fmt(ownerTitle) },
-    { n: 'Settlement / closing fee', v: '− ' + fmt(settleFee) },
-    { n: 'Title search', v: '− ' + fmt(titleSearch) },
-    { n: 'Title examination', v: '− ' + fmt(titleExam) },
-    { n: 'Recording fees', v: '− ' + fmt(recording) },
-    ...(warranty > 0 ? [{ n: 'Home warranty', v: '− ' + fmt(warranty) }] : []),
-    ...(credit   > 0 ? [{ n: 'Buyer closing cost credit', v: '− ' + fmt(credit) }] : []),
-    ...(repairs  > 0 ? [{ n: 'Repair credit', v: '− ' + fmt(repairs) }] : []),
-    { n: 'Estimated net proceeds', v: fmt(net), tot: true },
+    { n:'Sale price', v:fmt(price) },
+    { n:'Mortgage payoff', v:'– '+fmt(payoff) },
+    { n:'Real estate commission', sub:commPct+'% of sale price', v:'– '+fmt(comm) },
+    { n:'Documentary stamp tax on deed', sub:`FL §201.02 — ${county==='miami'?'$6.00 (Miami-Dade)':'$7.00'}/thousand, rounded up`, v:'– '+fmt(docStampsDeed) },
+    { n:'Closing fee', sub:'Florida Title Experts', v:'– '+fmt(closingFee) },
+    ...(sellerOwnerPolicy > 0 ? [{ n:"Owner's title insurance", sub:'FL DFS rate (contract: seller pays)', v:'– '+fmt(sellerOwnerPolicy) }] : []),
+    ...(sellerTitleSearch > 0 ? [{ n:'Title search', sub:'Per contract terms', v:'– '+fmt(sellerTitleSearch) }] : []),
+    ...(sellerLienSearch  > 0 ? [{ n:'Lien search (third-party est.)', sub:'Per contract terms', v:'– '+fmt(sellerLienSearch)  }] : []),
+    ...(warranty > 0 ? [{ n:'Home warranty', v:'– '+fmt(warranty) }] : []),
+    ...(credit   > 0 ? [{ n:'Buyer closing cost credit', v:'– '+fmt(credit) }] : []),
+    ...(repairs  > 0 ? [{ n:'Repair credit', v:'– '+fmt(repairs) }] : []),
+    { n:'Estimated net proceeds', v:fmt(net), tot:true },
+    ...(payer==='buyer' ? [{ n:'Note', sub:"Owner's title insurance, title search & lien search are paid by buyer per contract terms — not deducted here.", v:'' }] : []),
   ];
   renderLines('s-lines', items);
-  track('calc_seller', { price, net: Math.round(net) });
+  trackQuote('seller_net', { county, price, net: Math.round(net) });
 }
 
-/* ════════════════════════════════════════
-   TITLE QUOTE
-   ════════════════════════════════════════ */
-function calcQuote() {
-  const price       = Math.max(0, parseFloat($('q-price').value) || 0);
-  const loan        = Math.max(0, parseFloat($('q-loan').value) || 0);
-  const txType      = $('q-type').value;
-  const hasOwner    = $('q-owner').checked;
-  const hasLender   = $('q-lender').checked;
-  const hasEnhanced = $('q-enhanced').checked;
+/* ── Tab switch ── */
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  $('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
 
-  const ownerBase    = flTitleRate(price);
-  const ownerPremium = hasOwner ? (hasEnhanced ? Math.round(ownerBase * 1.10) : ownerBase) : 0;
+/* ── Gate submit ── */
+/* ══════════════════════════════════════
+   GOOGLE SHEETS INTEGRATION
+   Replace SCRIPT_URL with your deployed
+   Google Apps Script web app URL.
+══════════════════════════════════════ */
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwyYpZKmY7tErr629bi9sLn8OvTcISEuobRvKij9ARln2c7WT0d2TbRePBan_lQAN8Cwg/exec';
 
-  let lenderPremium = 0;
-  if (hasLender) {
-    lenderPremium = txType === 'refi'
-      ? flTitleRate(loan)                      /* Full rate for refi */
-      : Math.round(flTitleRate(loan) * 0.30);  /* Simultaneous issue rate for purchase */
+function submitGate() {
+  const name  = $('g-name').value.trim();
+  const phone = $('g-phone').value.trim();
+  const email = $('g-email').value.trim();
+  const role  = $('g-role').value;
+  let valid = true;
+  [$('g-name'),$('g-phone'),$('g-email')].forEach(el => el.classList.remove('err'));
+  if (!name)  { $('g-name').classList.add('err');  valid = false; }
+  if (!phone) { $('g-phone').classList.add('err'); valid = false; }
+  if (!email || !email.includes('@')) { $('g-email').classList.add('err'); valid = false; }
+  if (!valid) return;
+
+  const submitBtn = document.querySelector('#gate .btn');
+  submitBtn.textContent = 'Saving…';
+  submitBtn.disabled = true;
+
+  const lead = {
+    name, phone, email, role,
+    timestamp: new Date().toISOString(),
+    userAgent: navigator.userAgent
+  };
+
+  /* Save to localStorage as backup regardless of network */
+  try {
+    const existing = JSON.parse(localStorage.getItem('fte_leads') || '[]');
+    existing.push(lead);
+    localStorage.setItem('fte_leads', JSON.stringify(existing));
+  } catch(_) {}
+
+  /* POST to Google Sheets via Apps Script */
+  const proceed = () => {
+    $('gate').classList.add('hidden');
+    $('calc-wrap').classList.remove('hidden');
+    const today = new Date();
+    $('p-close-date').value = today.toISOString().split('T')[0];
+    calcPurchase();
+    calcRefi();
+    calcSeller();
+  };
+
+  if (SHEETS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+    /* Dev mode: skip the POST, just open the calculator */
+    proceed();
+    return;
   }
 
-  const settleFee   = txType === 'refi' ? 495 : 595;
-  const searchFee   = txType === 'refi' ? 150 : 175;
-  const examFee     = txType === 'refi' ? 150 : 200;
-  const endorsements= hasLender ? 150 : 0;
-  const recording   = 185;
-
-  const total = ownerPremium + lenderPremium + settleFee + searchFee + examFee + endorsements + recording;
-
-  $('q-total').textContent  = fmt(total);
-  $('q-own-v').textContent  = hasOwner  ? fmt(ownerPremium)  : 'Not selected';
-  $('q-len-v').textContent  = hasLender ? fmt(lenderPremium) : 'Not selected';
-  $('q-set-v').textContent  = fmt(settleFee);
-  $('q-src-v').textContent  = fmt(searchFee + examFee);
-
-  const items = [
-    ...(hasOwner ? [{
-      n: hasEnhanced ? "Owner's title policy (ALTA Enhanced Homeowner's)" : "Owner's title policy (standard)",
-      sub: 'FL DFS promulgated rate applied to purchase price',
-      v: fmt(ownerPremium)
-    }] : []),
-    ...(hasLender ? [{
-      n: "Lender's title policy",
-      sub: txType === 'refi' ? 'Full rate — refinance' : 'Simultaneous issue rate (30% of owner rate)',
-      v: fmt(lenderPremium)
-    }] : []),
-    { n: 'Settlement / closing fee', v: fmt(settleFee) },
-    { n: 'Title search', v: fmt(searchFee) },
-    { n: 'Title examination', v: fmt(examFee) },
-    ...(endorsements > 0 ? [{ n: 'Lender endorsements (FL 9, ALTA 4, etc.)', v: fmt(endorsements) }] : []),
-    { n: 'Recording fees', sub: 'Deed + mortgage instruments', v: fmt(recording) },
-    { n: 'Total title quote', v: fmt(total), tot: true },
-  ];
-  renderLines('q-lines', items);
-  track('calc_quote', { price, tx_type: txType, total: Math.round(total) });
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors', /* Apps Script requires no-cors */
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(lead)
+  })
+  .then(() => proceed())
+  .catch(() => {
+    /* Even if POST fails, still let the user in — lead is in localStorage */
+    proceed();
+  });
 }
 
-/* ── Copy to clipboard ── */
+/* ── Record each quote run to Sheets (optional enrichment) ── */
+function trackQuote(type, data) {
+  if (SHEETS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') return;
+  const lead = JSON.parse(localStorage.getItem('fte_leads') || '[]').slice(-1)[0] || {};
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      type: 'quote',
+      quoteType: type,
+      name: lead.name || '',
+      email: lead.email || '',
+      timestamp: new Date().toISOString(),
+      ...data
+    })
+  }).catch(() => {});
+}
+
+/* ── Copy ── */
 function doCopy() {
-  const activeTab  = document.querySelector('.tab.active').textContent.trim();
-  const mainEl     = document.querySelector('.tab-panel.active .r-main');
-  const subEl      = document.querySelector('.tab-panel.active .r-sub');
-  const main       = mainEl ? mainEl.textContent : '';
-  const sub        = subEl  ? subEl.textContent.replace(/\s+/g,' ').trim() : '';
-  const lines      = Array.from(document.querySelectorAll('.tab-panel.active .li-row'))
-    .map(r => {
-      const n = r.querySelector('.li-n')?.textContent.trim().replace(/\s+/g,' ') || '';
-      const v = r.querySelector('.li-v')?.textContent.trim() || '';
-      return n + ': ' + v;
-    }).join('\n');
+  const activePanel = document.querySelector('.tab-panel.active');
+  const main = activePanel.querySelector('.r-main');
+  const rows = Array.from(activePanel.querySelectorAll('.li-row:not(.section-hdr)')).map(r => {
+    const n = r.querySelector('.li-n')?.textContent.trim().replace(/\s+/g,' ') || '';
+    const v = r.querySelector('.li-v')?.textContent.trim() || '';
+    return v ? n.split('\n')[0].trim() + ': ' + v : '';
+  }).filter(Boolean).join('\n');
 
   const text = [
-    'Florida Title Experts — ' + activeTab,
+    'Florida Title Experts — Closing Cost Estimate',
     'fltitleexperts.com',
     '',
-    main + (sub ? '\n' + sub : ''),
+    'Total: ' + (main ? main.textContent : ''),
     '',
-    lines,
+    rows,
     '',
     'Estimates only. Not a Loan Estimate or commitment to insure.',
+    'Contact Florida Title Experts for a confirmed quote.',
   ].join('\n');
 
   navigator.clipboard.writeText(text).then(() => {
-    const btn = document.activeElement;
-    const orig = btn.innerHTML;
-    btn.innerHTML = btn.innerHTML.replace(/Copy estimate/, '✓ Copied!');
-    setTimeout(() => btn.innerHTML = orig, 2200);
-  }).catch(() => alert('Copy not supported in this browser. Use Ctrl+A / Cmd+A to select all.'));
-
-  track('copy_estimate', {});
-}
-
-/* ── Contact ── */
-function doContact() {
-  window.open('https://fltitleexperts.com/', '_blank', 'noopener');
-  track('contact_click', {});
-}
-
-/* ════════════════════════════════════════
-   TELEMETRY — zero-database
-   Works with PostHog, Plausible, GA4, or
-   falls back to localStorage counter.
-   ════════════════════════════════════════ */
-function track(event, props) {
-  try {
-    /* PostHog */
-    if (typeof window.posthog !== 'undefined') {
-      window.posthog.capture(event, props);
+    const btns = document.querySelectorAll('.btn');
+    const copyBtn = Array.from(btns).find(b => b.textContent.includes('Copy'));
+    if (copyBtn) {
+      const orig = copyBtn.innerHTML;
+      copyBtn.innerHTML = copyBtn.innerHTML.replace('Copy estimate','✓ Copied!');
+      setTimeout(() => copyBtn.innerHTML = orig, 2200);
     }
-    /* Plausible */
-    if (typeof window.plausible !== 'undefined') {
-      window.plausible(event, { props });
-    }
-    /* Google Analytics 4 */
-    if (typeof window.gtag !== 'undefined') {
-      window.gtag('event', event, props);
-    }
-    /* localStorage fallback counter (no server needed) */
-    try {
-      const key  = 'fte_telemetry';
-      const data = JSON.parse(localStorage.getItem(key) || '{}');
-      data[event] = (data[event] || 0) + 1;
-      data._last  = new Date().toISOString();
-      data._total = (data._total || 0) + 1;
-      localStorage.setItem(key, JSON.stringify(data));
-    } catch (_) {}
-  } catch (_) {}
+  }).catch(() => alert('Please use Ctrl+A / Cmd+A to select and copy.'));
 }
-
-/* ── Init ── */
-calcBuyer();
-calcSeller();
-calcQuote();
-track('tool_load', { referrer: document.referrer || 'direct', ts: new Date().toISOString() });
 </script>
 </body>
 </html>
