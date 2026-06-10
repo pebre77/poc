@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Florida Title Experts — Closing Cost Calculator</title>
 <meta name="description" content="Closing cost calculator, seller net sheet, and title quote tool for Florida real estate agents — Florida Title Experts.">
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -120,6 +121,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
 .btn.primary:hover{background:#1677a8;border-color:#1677a8;color:#fff}
 .btn.navy{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
 .btn.navy:hover{opacity:.88}
 
 /* Disclaimer */
@@ -172,7 +174,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
 <!-- Lead capture gate -->
 <div class="gate" id="gate">
-  <div style="text-align:center;margin-bottom:1rem"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2OTYgNTQ0IiB3aWR0aD0iNjk2IiBoZWlnaHQ9IjU0NCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJGbG9yaWRhIFRpdGxlIEV4cGVydHMgbG9nbyI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJsdWUiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzdiZGNmZiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjU1JSIgc3RvcC1jb2xvcj0iIzE4YWVlOCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwODcxYWEiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJsdWUyIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNiOGVmZmYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMGQ5ZGRiIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGZpbHRlciBpZD0ic29mdEdsb3ciIHg9Ii0yMCUiIHk9Ii0yMCUiIHdpZHRoPSIxNDAlIiBoZWlnaHQ9IjE0MCUiPgogICAgICA8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIyIiByZXN1bHQ9ImJsdXIiLz4KICAgICAgPGZlTWVyZ2U+CiAgICAgICAgPGZlTWVyZ2VOb2RlIGluPSJibHVyIi8+CiAgICAgICAgPGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+CiAgICAgIDwvZmVNZXJnZT4KICAgIDwvZmlsdGVyPgogICAgPHN0eWxlPgogICAgICAuY3lhbi1maWxse2ZpbGw6dXJsKCNibHVlKTtzdHJva2U6IzliZThmZjtzdHJva2Utd2lkdGg6NDtzdHJva2UtbGluZWpvaW46cm91bmQ7c3Ryb2tlLWxpbmVjYXA6cm91bmR9CiAgICAgIC5jeWFuLXN0cm9rZXtmaWxsOm5vbmU7c3Ryb2tlOiM4YmU3ZmY7c3Ryb2tlLXdpZHRoOjY7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS1saW5lY2FwOnJvdW5kfQogICAgICAuZGFya3tmaWxsOiMwNDExMWN9CiAgICAgIC53aGl0ZXtmaWxsOiNmN2Y3Zjd9CiAgICAgIC5zdWJ7ZmlsbDojNTViZGU5O2ZvbnQtZmFtaWx5Ok1vbnRzZXJyYXQsQXJpYWwsc2Fucy1zZXJpZjtmb250LXNpemU6MTdweDtmb250LXdlaWdodDo3MDA7bGV0dGVyLXNwYWNpbmc6MTFweH0KICAgICAgLnRpdGxle2ZpbGw6I2ZmZmZmZjtmb250LWZhbWlseTpNb250c2VycmF0LEFyaWFsLHNhbnMtc2VyaWY7Zm9udC1zaXplOjQ1cHg7Zm9udC13ZWlnaHQ6OTAwO2xldHRlci1zcGFjaW5nOjFweH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgoKICA8cmVjdCB3aWR0aD0iNjk2IiBoZWlnaHQ9IjU0NCIgZmlsbD0iIzAwMCIvPgoKICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLC00KSIgZmlsdGVyPSJ1cmwoI3NvZnRHbG93KSI+CiAgICA8IS0tIFJvb2YgYmFzZSBsaW5lIC0tPgogICAgPHBhdGggZD0iTTEyNiAyOTIgSDU3MCIgc3Ryb2tlPSIjOGFlN2ZmIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTExNiAzMDIgSDU4MiIgc3Ryb2tlPSIjMGI4OGJkIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgoKICAgIDwhLS0gTGVmdCByb29mIG1hc3MgLS0+CiAgICA8cGF0aCBjbGFzcz0iY3lhbi1maWxsIiBkPSJNMTI2IDI4OCBMMjIwIDIwNyBMMjc4IDI4OCBaIi8+CiAgICA8cGF0aCBjbGFzcz0iZGFyayIgZD0iTTE1NCAyNzYgTDIyMCAyMjAgTDI2MyAyNzYgWiIvPgogICAgPHBhdGggY2xhc3M9ImN5YW4tc3Ryb2tlIiBkPSJNMTU0IDI3NiBMMjIwIDIyMCBMMjYzIDI3NiIvPgogICAgPHJlY3QgeD0iMTgyIiB5PSIyMjQiIHdpZHRoPSIxNyIgaGVpZ2h0PSI1NSIgcng9IjIiIGZpbGw9InVybCgjYmx1ZSkiIHN0cm9rZT0iIzhiZTdmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+CgogICAgPCEtLSBDZW50ZXIgZGlhbW9uZCAtLT4KICAgIDxwYXRoIGNsYXNzPSJjeWFuLWZpbGwiIGQ9Ik0zNDggMTI4IEw0MjQgMjA0IEwzNDggMjgwIEwyNzIgMjA0IFoiLz4KICAgIDxwYXRoIGQ9Ik0zNDggMTQ0IEw0MDggMjA0IEwzNDggMjY0IEwyODggMjA0IFoiIGZpbGw9InVybCgjYmx1ZTIpIiBvcGFjaXR5PSIuOTIiLz4KICAgIDx0ZXh0IHg9IjM0OCIgeT0iMjE5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iTW9udHNlcnJhdCxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjQzIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjMDcxMzFmIj5GPC90ZXh0PgoKICAgIDwhLS0gUmlnaHQgcm9vZiBtYXNzIC0tPgogICAgPHBhdGggY2xhc3M9ImN5YW4tZmlsbCIgZD0iTTQxOCAyODggTDQ3NiAyMDcgTDU3MCAyODggWiIvPgogICAgPHBhdGggY2xhc3M9ImRhcmsiIGQ9Ik00MzQgMjc2IEw0NzYgMjIwIEw1NDIgMjc2IFoiLz4KICAgIDxwYXRoIGNsYXNzPSJjeWFuLXN0cm9rZSIgZD0iTTQzNCAyNzYgTDQ3NiAyMjAgTDU0MiAyNzYiLz4KICAgIDxyZWN0IHg9IjQ5NyIgeT0iMjI0IiB3aWR0aD0iMTciIGhlaWdodD0iNTUiIHJ4PSIyIiBmaWxsPSJ1cmwoI2JsdWUpIiBzdHJva2U9IiM4YmU3ZmYiIHN0cm9rZS13aWR0aD0iMiIvPgoKICAgIDwhLS0gQ29ubmVjdGluZyByb29mIGxpbmVzIC0tPgogICAgPHBhdGggY2xhc3M9ImN5YW4tc3Ryb2tlIiBkPSJNMjc4IDI4OCBMMzE5IDI0MCBMMzQ4IDI4OCBMMzc3IDI0MCBMNDE4IDI4OCIvPgogICAgPHBhdGggZD0iTTI4NiAyODggTDMyMCAyNTIgTDM0OCAyOTYgTDM3NiAyNTIgTDQxMCAyODgiIGZpbGw9IiMwNDExMWMiLz4KCiAgICA8IS0tIFdpbmRvd3MgbGVmdCAtLT4KICAgIDxnIHN0cm9rZT0iIzhiZTdmZiIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSIjMDYxNjIyIj4KICAgICAgPHJlY3QgeD0iMjQyIiB5PSIyNTgiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMiIgcng9IjEiLz4KICAgICAgPHBhdGggZD0iTTI1NyAyNTggVjI5MCBNMjQyIDI3NCBIMjcyIi8+CiAgICAgIDxyZWN0IHg9IjE5MSIgeT0iMjU5IiB3aWR0aD0iMjgiIGhlaWdodD0iMzEiIHJ4PSIxIi8+CiAgICAgIDxwYXRoIGQ9Ik0yMDUgMjU5IFYyOTAgTTE5MSAyNzUgSDIxOSIvPgogICAgICA8cmVjdCB4PSI0NzYiIHk9IjI1OCIgd2lkdGg9IjMwIiBoZWlnaHQ9IjMyIiByeD0iMSIvPgogICAgICA8cGF0aCBkPSJNNDkxIDI1OCBWMjkwIE00NzYgMjc0IEg1MDYiLz4KICAgIDwvZz4KICA8L2c+CgogIDwhLS0gTWFpbiB0ZXh0IC0tPgogIDx0ZXh0IGNsYXNzPSJ0aXRsZSIgeD0iMzQ4IiB5PSIzNjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkZMT1JJREEgVElUTEUgRVhQRVJUUzwvdGV4dD4KICA8dGV4dCBjbGFzcz0ic3ViIiB4PSIzNDgiIHk9IjQwNyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+WU9VUiBUSVRMRSBPVVIgRVhQRVJUSVNFPC90ZXh0Pgo8L3N2Zz4K" alt="Florida Title Experts" style="height:100px;width:auto"></div>
   <h2>Get your free closing cost estimate</h2>
   <p>Enter your contact info below so our team can follow up with a confirmed quote.<br>All estimates are provided by Florida Title Experts.</p>
   <div class="gate-form">
@@ -199,8 +200,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
         <option value="other">Other</option>
       </select>
     </div>
+    <div class="full" style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:.25rem">
+      <div class="g-recaptcha" data-sitekey="6LfyQRQtAAAAAOSIDrW6nQdSOu97kNiYkSc7PBq4" data-callback="onRecaptchaSuccess" data-expired-callback="onRecaptchaExpired"></div>
+      <div id="recaptcha-dev-notice" style="font-size:11px;color:#c47d00;background:#fff8e6;border:1px solid #f5d97a;border-radius:6px;padding:6px 12px;text-align:center;display:none">
+        ⚠️ reCAPTCHA not active — replace <code>YOUR_RECAPTCHA_SITE_KEY_HERE</code> with your real site key
+      </div>
+    </div>
     <div class="btn-submit full">
-      <button class="btn navy" style="width:100%;margin-top:.25rem" onclick="submitGate()">Get my estimate →</button>
+      <button class="btn navy" id="gate-submit-btn" style="width:100%;margin-top:.5rem" onclick="submitGate()" disabled>Get my estimate →</button>
     </div>
   </div>
   <div class="gate-note">🔒 Your information is only shared with Florida Title Experts and will never be sold.</div>
@@ -505,13 +512,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 
   <!-- Actions -->
   <div class="action-row">
-    <button class="btn" onclick="doCopy()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      Copy estimate
-    </button>
     <button class="btn" onclick="window.print()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-      Print / PDF
+      Print / Save as PDF
     </button>
     <button class="btn primary" onclick="window.open('https://fltitleexperts.com/','_blank','noopener')">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -519,7 +522,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
     </button>
   </div>
 
-  <div class="disc">
+  <div style="font-size:11px;color:var(--faint);text-align:center;margin-top:.75rem;line-height:1.6">
+  Protected by reCAPTCHA —
+  <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color:var(--blue)">Privacy Policy</a> &amp;
+  <a href="https://policies.google.com/terms" target="_blank" rel="noopener" style="color:var(--blue)">Terms of Service</a>
+</div>
+<div class="disc">
     <strong>Estimates only</strong> — not a Loan Estimate, Good Faith Estimate, or commitment to insure. Title insurance rates per Florida DFS Rule 69O-186. Doc stamps per FL §201.02 &amp; §201.08. Intangible tax per FL §199.135. Tax proration credits are estimates based on prior-year figures provided. Actual fees vary by lender and transaction. Contact Florida Title Experts for a confirmed quote.
   </div>
 
@@ -918,13 +926,37 @@ function switchTab(name, btn) {
    Replace SCRIPT_URL with your deployed
    Google Apps Script web app URL.
 ══════════════════════════════════════ */
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwyYpZKmY7tErr629bi9sLn8OvTcISEuobRvKij9ARln2c7WT0d2TbRePBan_lQAN8Cwg/exec';
+const SHEETS_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+const RECAPTCHA_SITE_KEY = 'YOUR_RECAPTCHA_SITE_KEY_HERE'; /* reCAPTCHA v2 site key */
+
+/* ── reCAPTCHA v2 callbacks ── */
+/* Show dev notice + enable button if site key is still a placeholder */
+document.addEventListener('DOMContentLoaded', () => {
+  if (RECAPTCHA_SITE_KEY === 'YOUR_RECAPTCHA_SITE_KEY_HERE') {
+    const notice = $('recaptcha-dev-notice');
+    const btn    = $('gate-submit-btn');
+    if (notice) notice.style.display = 'block';
+    if (btn)    btn.disabled = false; /* Allow testing without real key */
+  }
+});
+function onRecaptchaSuccess(token) {
+  /* Called by reCAPTCHA when user checks the box — enable submit */
+  $('gate-submit-btn').disabled = false;
+  $('gate-submit-btn').classList.remove('recaptcha-pending');
+}
+
+function onRecaptchaExpired() {
+  /* Called when the token expires (2 min) — disable submit again */
+  $('gate-submit-btn').disabled = true;
+}
 
 function submitGate() {
   const name  = $('g-name').value.trim();
   const phone = $('g-phone').value.trim();
   const email = $('g-email').value.trim();
   const role  = $('g-role').value;
+
+  /* Client-side field validation */
   let valid = true;
   [$('g-name'),$('g-phone'),$('g-email')].forEach(el => el.classList.remove('err'));
   if (!name)  { $('g-name').classList.add('err');  valid = false; }
@@ -932,14 +964,26 @@ function submitGate() {
   if (!email || !email.includes('@')) { $('g-email').classList.add('err'); valid = false; }
   if (!valid) return;
 
-  const submitBtn = document.querySelector('#gate .btn');
+  /* Get the reCAPTCHA v2 token */
+  const recaptchaToken = (typeof grecaptcha !== 'undefined')
+    ? grecaptcha.getResponse()
+    : 'dev-mode-no-token';
+
+  /* In dev mode (no site key set), token will be empty — allow through */
+  if (RECAPTCHA_SITE_KEY !== 'YOUR_RECAPTCHA_SITE_KEY_HERE' && !recaptchaToken) {
+    alert('Please complete the reCAPTCHA verification.');
+    return;
+  }
+
+  const submitBtn = $('gate-submit-btn');
   submitBtn.textContent = 'Saving…';
   submitBtn.disabled = true;
 
   const lead = {
     name, phone, email, role,
     timestamp: new Date().toISOString(),
-    userAgent: navigator.userAgent
+    userAgent: navigator.userAgent,
+    recaptchaToken
   };
 
   /* Save to localStorage as backup regardless of network */
@@ -949,7 +993,6 @@ function submitGate() {
     localStorage.setItem('fte_leads', JSON.stringify(existing));
   } catch(_) {}
 
-  /* POST to Google Sheets via Apps Script */
   const proceed = () => {
     $('gate').classList.add('hidden');
     $('calc-wrap').classList.remove('hidden');
@@ -961,22 +1004,18 @@ function submitGate() {
   };
 
   if (SHEETS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-    /* Dev mode: skip the POST, just open the calculator */
     proceed();
     return;
   }
 
   fetch(SHEETS_URL, {
     method: 'POST',
-    mode: 'no-cors', /* Apps Script requires no-cors */
+    mode: 'no-cors',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(lead)
   })
   .then(() => proceed())
-  .catch(() => {
-    /* Even if POST fails, still let the user in — lead is in localStorage */
-    proceed();
-  });
+  .catch(() => proceed()); /* Fail open — lead already in localStorage */
 }
 
 /* ── Record each quote run to Sheets (optional enrichment) ── */
@@ -998,38 +1037,7 @@ function trackQuote(type, data) {
   }).catch(() => {});
 }
 
-/* ── Copy ── */
-function doCopy() {
-  const activePanel = document.querySelector('.tab-panel.active');
-  const main = activePanel.querySelector('.r-main');
-  const rows = Array.from(activePanel.querySelectorAll('.li-row:not(.section-hdr)')).map(r => {
-    const n = r.querySelector('.li-n')?.textContent.trim().replace(/\s+/g,' ') || '';
-    const v = r.querySelector('.li-v')?.textContent.trim() || '';
-    return v ? n.split('\n')[0].trim() + ': ' + v : '';
-  }).filter(Boolean).join('\n');
 
-  const text = [
-    'Florida Title Experts — Closing Cost Estimate',
-    'fltitleexperts.com',
-    '',
-    'Total: ' + (main ? main.textContent : ''),
-    '',
-    rows,
-    '',
-    'Estimates only. Not a Loan Estimate or commitment to insure.',
-    'Contact Florida Title Experts for a confirmed quote.',
-  ].join('\n');
-
-  navigator.clipboard.writeText(text).then(() => {
-    const btns = document.querySelectorAll('.btn');
-    const copyBtn = Array.from(btns).find(b => b.textContent.includes('Copy'));
-    if (copyBtn) {
-      const orig = copyBtn.innerHTML;
-      copyBtn.innerHTML = copyBtn.innerHTML.replace('Copy estimate','✓ Copied!');
-      setTimeout(() => copyBtn.innerHTML = orig, 2200);
-    }
-  }).catch(() => alert('Please use Ctrl+A / Cmd+A to select and copy.'));
-}
 </script>
 </body>
 </html>
